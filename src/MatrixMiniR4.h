@@ -63,8 +63,8 @@ public:
     MiniR4RC<4> RC4;
 
     // Button
-    MiniR4BTN<1> BTN_UP;
-    MiniR4BTN<2> BTN_DOWN;
+    MiniR4BTN<2> BTN_UP;
+    MiniR4BTN<1> BTN_DOWN;
 
     // RGB LED (GPIO 7)
     MiniR4LED LED;

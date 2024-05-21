@@ -22,6 +22,12 @@ public:
         return speed;
     }
 
+    bool resetCounter(void)
+    {
+        MMLower::RESULT result = mmL.SetEncoderResetCounter(_id);
+        return (result == MMLower::RESULT::OK);
+    }
+
 private:
     uint8_t _id;
 };

@@ -52,7 +52,6 @@ void loop(void)
     // TaskDIO();           // pass
     // TaskAIO();           // pass
     // TaskGrayScale();     // pass
-    // TaskUart();          // pass
     // TaskPS2();           // pass
     // TaskI2CColor();      // pass
     // TaskPower();         // pass
@@ -399,22 +398,6 @@ void TaskGrayScale(void)
         char buff[50];
         sprintf(buff, "AI: %d, DI: %d", AI, DI);
         Serial.println(buff);
-    }
-}
-
-void TaskUart(void)
-{
-    static bool initFlag = false;
-
-    if (!initFlag) {
-        MiniR4.Uart.begin(115200);
-        initFlag = true;
-    }
-
-    static uint32_t timer = 0;
-    if (millis() >= timer) {
-        timer = millis() + 100;
-        MiniR4.Uart.println("Hello, Matrix Mini R4");
     }
 }
 
