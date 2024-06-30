@@ -36,8 +36,8 @@ bool MatrixMiniR4::begin()
     OLED.clearDisplay();
     OLED.display();
 
-    /* CLK: D3R(11) , CMD: D4R(10) , SET: D3L(12) , DAT: D4L(13) */
-    PS2.config_gamepad(11, 10, 12, 13, false, false);
+    /* CLK: D3R(11) , CMD: D2R(4) , SET: D3L(12) , DAT: D2L(5) */
+    PS2.config_gamepad(11, 4, 12, 5, false, false);
 
     return (result == MMLower::RESULT::OK);
 }

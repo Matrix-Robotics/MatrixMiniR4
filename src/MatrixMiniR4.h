@@ -27,6 +27,7 @@
 #include "Modules/MiniR4Power.h"
 #include "Modules/MiniR4RC.h"
 #include "Modules/MiniR4SmartCamReader.h"
+#include "Modules/MiniR4Tone.h"
 #include "Modules/MiniR4VernierLib.h"
 
 #include <Arduino.h>
