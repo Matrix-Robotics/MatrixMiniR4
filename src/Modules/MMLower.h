@@ -82,6 +82,7 @@ public:
 
         // Setting-Commonly used
         SET_DC_MOTOR_SPEED = 0x11,
+        SET_DC_MOTOR_ROTATE,
         SET_ALL_DC_MOTOR_SPEED,
         SET_SERVO_ANGLE,
         SET_ALL_SERVO_ANGLE,
@@ -89,6 +90,7 @@ public:
         SET_ENCODER_RESET_COUNTER,
         SET_STATE_LED,
         SET_IMU_TO_ZERO,
+        SET_PID_PARAM,
 
         // Getting
         GET_BUTTON_STATE = 0x21,
@@ -295,17 +297,19 @@ public:
     RESULT SetStateLED(uint8_t brightness, uint32_t colorRGB);
     RESULT SetIMUToZero(void);
     // Setting-Commonly used
-    RESULT SetDCMotorSpeed(uint8_t num, uint16_t speed, DIR dir);
+    RESULT SetDCMotorSpeed(uint8_t num, int16_t speed);
+    RESULT SetDCMotorRotate(uint8_t num, int16_t maxSpeed, uint16_t degree);
     RESULT SetAllDCMotorSpeed(Motors_Param_t param);
     RESULT SetServoAngle(uint8_t num, uint16_t angle);
     RESULT SetAllServoAngle(uint16_t angle1, uint16_t angle2, uint16_t angle3, uint16_t angle4);
     RESULT SetMoveDistance(MOVE_TYPE type, MOVE_ACTION action, uint16_t speed, uint16_t enCounter);
     RESULT SetEncoderResetCounter(uint8_t num);
+    RESULT SetPIDParam(uint8_t num, uint8_t pidNum, float kp, float ki, float kd);
     // Getting
     RESULT GetButtonState(uint8_t num, bool& btnState);
     RESULT GetButtonsState(bool* btnsState);
-    RESULT GetEncoderCounter(uint8_t num, int16_t& enCounter);
-    RESULT GetAllEncoderCounter(int16_t* enCounter);
+    RESULT GetEncoderCounter(uint8_t num, int32_t& enCounter);
+    RESULT GetAllEncoderCounter(int32_t* enCounter);
     RESULT GetIMUEuler(int16_t& roll, int16_t& pitch, int16_t& yaw);
     RESULT GetIMUGyro(double& x, double& y, double& z);
     RESULT GetIMUAcc(double& x, double& y, double& z);
@@ -324,7 +328,7 @@ public:
 
     // TODO: 外部存取?
     // Encoders
-    int16_t enCounter[MatrixR4_ENCODER_NUM];
+    int32_t enCounter[MatrixR4_ENCODER_NUM];
     // IMU
     double imuGyroX, imuGyroY, imuGyroZ;
     double imuAccX, imuAccY, imuAccZ;

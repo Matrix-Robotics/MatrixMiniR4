@@ -328,13 +328,13 @@ MMLower::RESULT MMLower::SetPowerParam(float fullVolt, float cutOffVolt, float a
     return RESULT::ERROR;
 }
 // Setting-Commonly used
-MMLower::RESULT MMLower::SetDCMotorSpeed(uint8_t num, uint16_t speed, DIR dir)
+MMLower::RESULT MMLower::SetDCMotorSpeed(uint8_t num, int16_t speed)
 {
     MR4_DEBUG_PRINT_HEADER(F("[SetDCMotorSpeed]"));
 
     uint8_t data[4];
     data[0] = (1 << --num);
-    data[1] = (uint8_t)dir;
+    data[1] = 0;   // Ma
     BitConverter::GetBytes(data + 2, speed);
     CommSendData(COMM_CMD::SET_DC_MOTOR_SPEED, data, 4);
     if (!WaitData(COMM_CMD::SET_DC_MOTOR_SPEED, 100)) {
@@ -355,6 +355,35 @@ MMLower::RESULT MMLower::SetDCMotorSpeed(uint8_t num, uint16_t speed, DIR dir)
     if (b[0] == 0x02) {
         MR4_DEBUG_PRINT_TAIL(F("ERROR_MOTOR_SPEED"));
         return RESULT::ERROR_MOTOR_SPEED;
+    }
+
+    MR4_DEBUG_PRINT_TAIL(F("ERROR"));
+    return RESULT::ERROR;
+}
+
+MMLower::RESULT MMLower::SetDCMotorRotate(uint8_t num, int16_t maxSpeed, uint16_t degree)
+{
+    MR4_DEBUG_PRINT_HEADER(F("[SetDCMotorRotate]"));
+
+    uint8_t data[5];
+    data[0] = (1 << --num);
+    BitConverter::GetBytes(data + 1, maxSpeed);
+    BitConverter::GetBytes(data + 3, degree);
+    CommSendData(COMM_CMD::SET_DC_MOTOR_ROTATE, data, 5);
+    if (!WaitData(COMM_CMD::SET_DC_MOTOR_ROTATE, 100)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_WAIT_TIMEOUT"));
+        return RESULT::ERROR_WAIT_TIMEOUT;
+    }
+
+    uint8_t b[1];
+    if (!CommReadData(b, 1)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
+        return RESULT::ERROR_READ_TIMEOUT;
+    }
+
+    if (b[0] == 0x00) {
+        MR4_DEBUG_PRINT_TAIL(F("OK"));
+        return RESULT::OK;
     }
 
     MR4_DEBUG_PRINT_TAIL(F("ERROR"));
@@ -557,6 +586,33 @@ MMLower::RESULT MMLower::SetEncoderResetCounter(uint8_t num)
     return RESULT::ERROR;
 }
 
+MMLower::RESULT MMLower::SetPIDParam(uint8_t num, uint8_t pidNum, float kp, float ki, float kd)
+{
+    uint8_t data[8] = {(1 << --num), pidNum};
+    BitConverter::GetBytes(data + 2, (uint16_t)(kp * 100.0f));
+    BitConverter::GetBytes(data + 4, (uint16_t)(ki * 100.0f));
+    BitConverter::GetBytes(data + 6, (uint16_t)(kd * 100.0f));
+
+    CommSendData(COMM_CMD::SET_PID_PARAM, data, 8);
+    if (!WaitData(COMM_CMD::SET_PID_PARAM, 100)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_WAIT_TIMEOUT"));
+        return RESULT::ERROR_WAIT_TIMEOUT;
+    }
+
+    uint8_t b[1];
+    if (!CommReadData(b, 1)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
+        return RESULT::ERROR_READ_TIMEOUT;
+    }
+    if (b[0] == 0x00) {
+        MR4_DEBUG_PRINT_TAIL(F("OK"));
+        return RESULT::OK;
+    }
+
+    return RESULT::ERROR;
+}
+
+
 MMLower::RESULT MMLower::SetStateLED(uint8_t brightness, uint32_t colorRGB)
 {
     MR4_DEBUG_PRINT_HEADER(F("[SetStateLED]"));
@@ -655,7 +711,7 @@ MMLower::RESULT MMLower::GetButtonsState(bool* btnsState)
     return RESULT::OK;
 }
 
-MMLower::RESULT MMLower::GetEncoderCounter(uint8_t num, int16_t& enCounter)
+MMLower::RESULT MMLower::GetEncoderCounter(uint8_t num, int32_t& enCounter)
 {
     MR4_DEBUG_PRINT_HEADER(F("[GetEncoderCounter]"));
 
@@ -666,18 +722,18 @@ MMLower::RESULT MMLower::GetEncoderCounter(uint8_t num, int16_t& enCounter)
         return RESULT::ERROR_WAIT_TIMEOUT;
     }
 
-    uint8_t b[2];
-    if (!CommReadData(b, 2)) {
+    uint8_t b[4];
+    if (!CommReadData(b, 4)) {
         MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
         return RESULT::ERROR_READ_TIMEOUT;
     }
-    enCounter = BitConverter::ToInt16(b, 0);
+    enCounter = BitConverter::ToInt32(b, 0);
 
     MR4_DEBUG_PRINT_TAIL(F("OK"));
     return RESULT::OK;
 }
 
-MMLower::RESULT MMLower::GetAllEncoderCounter(int16_t* enCounter)
+MMLower::RESULT MMLower::GetAllEncoderCounter(int32_t* enCounter)
 {
     MR4_DEBUG_PRINT_HEADER(F("[GetAllEncoderCounter]"));
 
@@ -687,15 +743,15 @@ MMLower::RESULT MMLower::GetAllEncoderCounter(int16_t* enCounter)
         return RESULT::ERROR_WAIT_TIMEOUT;
     }
 
-    uint8_t b[8];
-    if (!CommReadData(b, 8)) {
+    uint8_t b[16];
+    if (!CommReadData(b, 16)) {
         MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
         return RESULT::ERROR_READ_TIMEOUT;
     }
-    enCounter[0] = BitConverter::ToInt16(b, 0);
-    enCounter[1] = BitConverter::ToInt16(b, 2);
-    enCounter[2] = BitConverter::ToInt16(b, 4);
-    enCounter[3] = BitConverter::ToInt16(b, 6);
+    enCounter[0] = BitConverter::ToInt32(b, 0);
+    enCounter[1] = BitConverter::ToInt32(b, 4);
+    enCounter[2] = BitConverter::ToInt32(b, 8);
+    enCounter[3] = BitConverter::ToInt32(b, 12);
 
     MR4_DEBUG_PRINT_TAIL(F("OK"));
     return RESULT::OK;

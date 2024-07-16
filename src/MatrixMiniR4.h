@@ -17,7 +17,6 @@
 #include "Modules/MiniR4Buzzer.h"
 #include "Modules/MiniR4DAC.h"
 #include "Modules/MiniR4DC.h"
-#include "Modules/MiniR4ENC.h"
 #include "Modules/MiniR4I2C.h"
 #include "Modules/MiniR4LED.h"
 #include "Modules/MiniR4Motion.h"
@@ -50,12 +49,6 @@ public:
     MiniR4DC<2> M2;
     MiniR4DC<3> M3;
     MiniR4DC<4> M4;
-
-    // Encoder
-    MiniR4ENC<1> ENC1;
-    MiniR4ENC<2> ENC2;
-    MiniR4ENC<3> ENC3;
-    MiniR4ENC<4> ENC4;
 
     // Servo
     MiniR4RC<1> RC1;

@@ -39,7 +39,23 @@ bool MatrixMiniR4::begin()
     /* CLK: D3R(11) , CMD: D2R(4) , SET: D3L(12) , DAT: D2L(5) */
     PS2.config_gamepad(11, 4, 12, 5, false, false);
 
-    return (result == MMLower::RESULT::OK);
+    if (result != MMLower::RESULT::OK) {
+        OLED.setCursor(4, 8);
+        OLED.setTextSize(2);
+        OLED.setTextColor(WHITE);
+        OLED.print(F("Init Error"));
+        OLED.display();
+        while (true) {
+            for (uint8_t i = 0; i < 3; i++) {
+                Buzzer.Tone(700, 100);
+                delay(100);
+                Buzzer.NoTone();
+                delay(100);
+            }
+            delay(3000);
+        }
+    }
+    return true;
 }
 
 MatrixMiniR4 MiniR4;
