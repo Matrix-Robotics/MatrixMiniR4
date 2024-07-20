@@ -5,15 +5,10 @@ void setup(void)
     Serial.begin(115200);
 
     bool ret = MiniR4.begin();
-    MiniR4.M1.setHWDir(true);
-    MiniR4.M2.setHWDir(true);
-    MiniR4.M3.setHWDir(true);
-    MiniR4.M4.setHWDir(true);
-
-    MiniR4.ENC1.setHWDir(true);
-    MiniR4.ENC2.setHWDir(true);
-    MiniR4.ENC3.setHWDir(true);
-    MiniR4.ENC4.setHWDir(true);
+    MiniR4.M1.setReverse(true);
+    MiniR4.M2.setReverse(false);
+    MiniR4.M3.setReverse(false);
+    MiniR4.M4.setReverse(false);
 
     MiniR4.RC1.setHWDir(true);
     MiniR4.RC2.setHWDir(true);
@@ -40,11 +35,11 @@ void loop(void)
 {
     // TaskLED();           // pass
     // TaskButton();        // pass
-    // TaskMotor();         // pass
+    TaskMotor();         // pass
     // TaskServo();         // pass
     // TaskMotion();        // pass
     // TaskBuzzer();        // pass
-    // TaskEncoder();       // pass
+    // TaskEncoder();   // pass
     // TaskOLED();          // pass
     // TaskWiFi();          // pass
     // TaskI2CMotion();     // pass
@@ -57,7 +52,7 @@ void loop(void)
     // TaskPower();         // pass
 
     // TaskVernier();
-    TaskVision();
+    // TaskVision();
 }
 
 void TaskLED(void)
@@ -77,15 +72,15 @@ void TaskLED(void)
 void TaskMotor(void)
 {
     static uint32_t timer = 0;
-    static bool     dir   = true;
+    static int8_t   speed = 100;
 
     if (millis() >= timer) {
         timer = millis() + 5000;
-        dir   = !dir;
-        MiniR4.M1.setSpeed(100, dir);
-        MiniR4.M2.setSpeed(100, dir);
-        MiniR4.M3.setSpeed(100, dir);
-        MiniR4.M4.setSpeed(100, dir);
+        speed *= -1;
+        MiniR4.M1.setPower(speed);
+        MiniR4.M2.setPower(speed);
+        MiniR4.M3.setPower(speed);
+        MiniR4.M4.setPower(speed);
     }
 }
 
@@ -162,13 +157,13 @@ void TaskEncoder(void)
 
     if (millis() >= timer) {
         timer        = millis() + 200;
-        int16_t enc1 = MiniR4.ENC1.getCounter();
-        int16_t enc2 = MiniR4.ENC2.getCounter();
-        int16_t enc3 = MiniR4.ENC3.getCounter();
-        int16_t enc4 = MiniR4.ENC4.getCounter();
+        int32_t enc1 = MiniR4.M1.getCounter();
+        int32_t enc2 = MiniR4.M2.getCounter();
+        int32_t enc3 = MiniR4.M3.getCounter();
+        int32_t enc4 = MiniR4.M4.getCounter();
 
         char buff[100];
-        sprintf(buff, "Encoder: %d, %d, %d, %d", enc1, enc2, enc3, enc4);
+        sprintf(buff, "Encoder: %ld, %ld, %ld, %ld", enc1, enc2, enc3, enc4);
 
         Serial.println(buff);
     }

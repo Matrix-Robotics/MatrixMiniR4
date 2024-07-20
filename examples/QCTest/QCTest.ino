@@ -67,7 +67,7 @@ void TaskPage0(void)
     switch (page0State) {
     case 0:   // init
     {
-        MiniR4.PWR.setBattCell(3);
+        MiniR4.PWR.setBattCell(2);
         page0State = 1;
     } break;
     case 1:   // Run
@@ -102,23 +102,19 @@ void TaskPage1(void)
     case 0:   // init
     {
         dir = true;
-        MiniR4.M1.setHWDir(true);
-        MiniR4.M2.setHWDir(true);
-        MiniR4.M3.setHWDir(true);
-        MiniR4.M4.setHWDir(true);
-        MiniR4.ENC1.setHWDir(true);
-        MiniR4.ENC2.setHWDir(true);
-        MiniR4.ENC3.setHWDir(true);
-        MiniR4.ENC4.setHWDir(true);
+        MiniR4.M1.setReverse(true);
+        MiniR4.M2.setReverse(true);
+        MiniR4.M3.setReverse(true);
+        MiniR4.M4.setReverse(true);
         MiniR4.RC1.setHWDir(true);
         MiniR4.RC2.setHWDir(true);
         MiniR4.RC3.setHWDir(true);
         MiniR4.RC4.setHWDir(true);
 
-        MiniR4.M1.setSpeed(100, dir);
-        MiniR4.M2.setSpeed(100, dir);
-        MiniR4.M3.setSpeed(100, dir);
-        MiniR4.M4.setSpeed(100, dir);
+        MiniR4.M1.setPower(100);
+        MiniR4.M2.setPower(100);
+        MiniR4.M3.setPower(100);
+        MiniR4.M4.setPower(100);
 
         MiniR4.RC1.setAngle(180);
         MiniR4.RC2.setAngle(180);
@@ -130,11 +126,12 @@ void TaskPage1(void)
     case 1:   // Run
     {
         if (btnA.readState() == BTN_STATE::F_EDGE) {
-            dir = !dir;
-            MiniR4.M1.setSpeed(100, dir);
-            MiniR4.M2.setSpeed(100, dir);
-            MiniR4.M3.setSpeed(100, dir);
-            MiniR4.M4.setSpeed(100, dir);
+            dir           = !dir;
+            int16_t speed = dir ? 100 : -100;
+            MiniR4.M1.setPower(speed);
+            MiniR4.M2.setPower(speed);
+            MiniR4.M3.setPower(speed);
+            MiniR4.M4.setPower(speed);
             MiniR4.RC1.setHWDir(dir);
             MiniR4.RC2.setHWDir(dir);
             MiniR4.RC3.setHWDir(dir);
@@ -152,16 +149,16 @@ void TaskPage1(void)
             MiniR4.OLED.setTextColor(WHITE);
             MiniR4.OLED.setCursor(0, 0);
             MiniR4.OLED.print("M1:");
-            MiniR4.OLED.print(MiniR4.ENC1.getCounter());
+            MiniR4.OLED.print(MiniR4.M1.getCounter());
             MiniR4.OLED.setCursor(0, 16);
             MiniR4.OLED.print("M2:");
-            MiniR4.OLED.print(MiniR4.ENC2.getCounter());
+            MiniR4.OLED.print(MiniR4.M2.getCounter());
             MiniR4.OLED.setCursor(64, 0);
             MiniR4.OLED.print("M3:");
-            MiniR4.OLED.print(MiniR4.ENC3.getCounter());
+            MiniR4.OLED.print(MiniR4.M3.getCounter());
             MiniR4.OLED.setCursor(64, 16);
             MiniR4.OLED.print("M4:");
-            MiniR4.OLED.print(MiniR4.ENC4.getCounter());
+            MiniR4.OLED.print(MiniR4.M4.getCounter());
             MiniR4.OLED.display();
         }
     } break;
@@ -334,10 +331,10 @@ void TaskPage4(void)
 
 void Stop(void)
 {
-    MiniR4.M1.setSpeed(0, false);
-    MiniR4.M2.setSpeed(0, false);
-    MiniR4.M3.setSpeed(0, false);
-    MiniR4.M4.setSpeed(0, false);
+    MiniR4.M1.setPower(0);
+    MiniR4.M2.setPower(0);
+    MiniR4.M3.setPower(0);
+    MiniR4.M4.setPower(0);
     MiniR4.LED.setColor(1, 0x00);
     MiniR4.LED.setColor(2, 0x00);
     MiniR4.OLED.clearDisplay();
