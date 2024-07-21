@@ -35,11 +35,11 @@ void loop(void)
 {
     // TaskLED();           // pass
     // TaskButton();        // pass
-    TaskMotor();         // pass
+    // TaskMotor();         // pass
     // TaskServo();         // pass
     // TaskMotion();        // pass
     // TaskBuzzer();        // pass
-    // TaskEncoder();   // pass
+    // TaskEncoder();       // pass
     // TaskOLED();          // pass
     // TaskWiFi();          // pass
     // TaskI2CMotion();     // pass
@@ -50,6 +50,7 @@ void loop(void)
     // TaskPS2();           // pass
     // TaskI2CColor();      // pass
     // TaskPower();         // pass
+    TaskMotorRotationDeg();   // pass
 
     // TaskVernier();
     // TaskVision();
@@ -476,5 +477,19 @@ void TaskVision(void)
 
         unsigned int data[20];
         int          result = MiniR4.Vision.SmartCamReader(data);
+    }
+}
+
+void TaskMotorRotationDeg(void)
+{
+    if (Serial.available()) {
+        String str = Serial.readStringUntil('\n');
+
+        uint16_t deg = atoi(str.c_str());
+        MiniR4.M1.rotateToDeg(75, deg);
+        MiniR4.M2.rotateToDeg(75, deg);
+
+        Serial.print("Degrees = ");
+        Serial.println(deg);
     }
 }
