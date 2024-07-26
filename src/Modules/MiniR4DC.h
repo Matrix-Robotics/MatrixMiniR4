@@ -28,7 +28,7 @@ public:
         return (result == MMLower::RESULT::OK);
     }
 
-    bool rotateToDeg(int16_t power, uint16_t degree)
+    bool rotateFor(int16_t power, uint16_t degree)
     {
         MMLower::RESULT result = mmL.SetDCMotorRotate(_id, power, degree);
         return (result == MMLower::RESULT::OK);

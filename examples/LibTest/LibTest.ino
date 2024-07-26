@@ -486,8 +486,8 @@ void TaskMotorRotationDeg(void)
         String str = Serial.readStringUntil('\n');
 
         uint16_t deg = atoi(str.c_str());
-        MiniR4.M1.rotateToDeg(75, deg);
-        MiniR4.M2.rotateToDeg(75, deg);
+        MiniR4.M1.rotateFor(75, deg);
+        MiniR4.M2.rotateFor(75, deg);
 
         Serial.print("Degrees = ");
         Serial.println(deg);
