@@ -21,10 +21,10 @@ bool MatrixMiniR4::begin()
     LED.begin(7);
     Buzzer.begin(6);
 
-    M1.begin();
-    M2.begin();
-    M3.begin();
-    M4.begin();
+    while (!M1.begin());
+    while (!M2.begin());
+    while (!M3.begin());
+    while (!M4.begin());
 
     RC1.begin();
     RC2.begin();

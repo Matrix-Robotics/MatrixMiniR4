@@ -81,7 +81,8 @@ public:
         SET_POWER_PARAM,
 
         // Setting-Commonly used
-        SET_DC_MOTOR_SPEED = 0x11,
+        SET_DC_MOTOR_POWER = 0x11,
+        SET_DC_MOTOR_SPEED,
         SET_DC_MOTOR_ROTATE,
         SET_ALL_DC_MOTOR_SPEED,
         SET_SERVO_ANGLE,
@@ -238,6 +239,7 @@ public:
 
         // Motor Speed
         ERROR_MOTOR_SPEED,
+        ERROR_MOTOR_POWER,
         ERROR_MOTOR1_SPEED,
         ERROR_MOTOR2_SPEED,
         ERROR_MOTOR3_SPEED,
@@ -297,6 +299,7 @@ public:
     RESULT SetStateLED(uint8_t brightness, uint32_t colorRGB);
     RESULT SetIMUToZero(void);
     // Setting-Commonly used
+    RESULT SetDCMotorPower(uint8_t num, int16_t power);
     RESULT SetDCMotorSpeed(uint8_t num, int16_t speed);
     RESULT SetDCMotorRotate(uint8_t num, int16_t maxSpeed, uint16_t degree);
     RESULT SetAllDCMotorSpeed(Motors_Param_t param);

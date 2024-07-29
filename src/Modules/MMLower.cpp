@@ -328,6 +328,40 @@ MMLower::RESULT MMLower::SetPowerParam(float fullVolt, float cutOffVolt, float a
     return RESULT::ERROR;
 }
 // Setting-Commonly used
+
+MMLower::RESULT MMLower::SetDCMotorPower(uint8_t num, int16_t power)
+{
+    MR4_DEBUG_PRINT_HEADER(F("[SetDCMotorPower]"));
+
+    uint8_t data[4];
+    data[0] = (1 << --num);
+    data[1] = 0;   // Ma
+    BitConverter::GetBytes(data + 2, power);
+    CommSendData(COMM_CMD::SET_DC_MOTOR_POWER, data, 4);
+    if (!WaitData(COMM_CMD::SET_DC_MOTOR_POWER, 100)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_WAIT_TIMEOUT"));
+        return RESULT::ERROR_WAIT_TIMEOUT;
+    }
+
+    uint8_t b[1];
+    if (!CommReadData(b, 1)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
+        return RESULT::ERROR_READ_TIMEOUT;
+    }
+
+    if (b[0] == 0x00) {
+        MR4_DEBUG_PRINT_TAIL(F("OK"));
+        return RESULT::OK;
+    }
+    if (b[0] == 0x02) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_MOTOR_POWER"));
+        return RESULT::ERROR_MOTOR_POWER;
+    }
+
+    MR4_DEBUG_PRINT_TAIL(F("ERROR"));
+    return RESULT::ERROR;
+}
+
 MMLower::RESULT MMLower::SetDCMotorSpeed(uint8_t num, int16_t speed)
 {
     MR4_DEBUG_PRINT_HEADER(F("[SetDCMotorSpeed]"));

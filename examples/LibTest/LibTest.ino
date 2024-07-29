@@ -36,6 +36,7 @@ void loop(void)
     // TaskLED();           // pass
     // TaskButton();        // pass
     // TaskMotor();         // pass
+    // TaskMotorPID();      // pass
     // TaskServo();         // pass
     // TaskMotion();        // pass
     // TaskBuzzer();        // pass
@@ -50,7 +51,7 @@ void loop(void)
     // TaskPS2();           // pass
     // TaskI2CColor();      // pass
     // TaskPower();         // pass
-    TaskMotorRotationDeg();   // pass
+    // TaskMotorRotationDeg();   // pass
 
     // TaskVernier();
     // TaskVision();
@@ -82,6 +83,21 @@ void TaskMotor(void)
         MiniR4.M2.setPower(speed);
         MiniR4.M3.setPower(speed);
         MiniR4.M4.setPower(speed);
+    }
+}
+
+void TaskMotorPID(void)
+{
+    static uint32_t timer = 0;
+    static int8_t   speed = 100;
+
+    if (millis() >= timer) {
+        timer = millis() + 5000;
+        speed *= -1;
+        MiniR4.M1.setSpeed(speed);
+        MiniR4.M2.setSpeed(speed);
+        MiniR4.M3.setSpeed(speed);
+        MiniR4.M4.setSpeed(speed);
     }
 }
 

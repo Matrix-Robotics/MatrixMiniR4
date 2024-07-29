@@ -10,21 +10,33 @@ public:
 
     bool begin(void)
     {
-        MMLower::RESULT result = mmL.SetDCMotorSpeedRange(_id, 0, 100);
-        return (result == MMLower::RESULT::OK);
+        MMLower::RESULT result  = mmL.SetDCMotorSpeedRange(_id, 0, 100);
+        MMLower::RESULT result1 = mmL.SetEncoderResetCounter(_id);
+        MMLower::RESULT result2 = mmL.SetDCMotorPower(_id, 0);
+
+        return (
+            result == MMLower::RESULT::OK && result1 == MMLower::RESULT::OK &&
+            result2 == MMLower::RESULT::OK);
     }
 
     bool setReverse(bool dir)
     {
         MMLower::DIR    _dir        = (dir) ? MMLower::DIR::REVERSE : MMLower::DIR::FORWARD;
         MMLower::RESULT resultMotor = mmL.SetDCMotorDir(_id, _dir);
-        MMLower::RESULT resultEnc   = mmL.SetEncoderDir(_id, _dir);
-        return (resultMotor == MMLower::RESULT::OK && resultEnc == MMLower::RESULT::OK);
+        // MMLower::RESULT resultEnc   = mmL.SetEncoderDir(_id, _dir);
+        // return (resultMotor == MMLower::RESULT::OK && resultEnc == MMLower::RESULT::OK);
+        return (resultMotor == MMLower::RESULT::OK);
     }
 
     bool setPower(int16_t power)
     {
-        MMLower::RESULT result = mmL.SetDCMotorSpeed(_id, power);
+        MMLower::RESULT result = mmL.SetDCMotorPower(_id, power);
+        return (result == MMLower::RESULT::OK);
+    }
+
+    bool setSpeed(int16_t speed)
+    {
+        MMLower::RESULT result = mmL.SetDCMotorSpeed(_id, speed);
         return (result == MMLower::RESULT::OK);
     }
 

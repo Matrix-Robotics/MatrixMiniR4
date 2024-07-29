@@ -35,3 +35,5 @@
 .vscode
 build_temp
 example/DevSamples
+examples/FixedSpeed/FixedSpeed.ino
+examples/RotationDeg/RotationDeg.ino
