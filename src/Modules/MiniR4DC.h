@@ -13,10 +13,11 @@ public:
         MMLower::RESULT result  = mmL.SetDCMotorSpeedRange(_id, 0, 100);
         MMLower::RESULT result1 = mmL.SetEncoderResetCounter(_id);
         MMLower::RESULT result2 = mmL.SetDCMotorPower(_id, 0);
+        MMLower::RESULT result3 = mmL.SetDCMotorDir(_id, MMLower::DIR::FORWARD);
 
         return (
             result == MMLower::RESULT::OK && result1 == MMLower::RESULT::OK &&
-            result2 == MMLower::RESULT::OK);
+            result2 == MMLower::RESULT::OK && result3 == MMLower::RESULT::OK);
     }
 
     bool setReverse(bool dir)
@@ -63,6 +64,13 @@ public:
         int32_t         counter = 0;
         MMLower::RESULT result  = mmL.GetEncoderCounter(_id, counter);
         return counter;
+    }
+
+    int32_t getDegress(void)
+    {
+        int32_t         counter = 0;
+        MMLower::RESULT result  = mmL.GetEncoderCounter(_id, counter);
+        return (int32_t)((double)counter / 545 * 360);
     }
 
     bool resetCounter(void)
