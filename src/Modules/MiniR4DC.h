@@ -41,9 +41,9 @@ public:
         return (result == MMLower::RESULT::OK);
     }
 
-    bool rotateFor(int16_t power, uint16_t degree)
+    bool rotateFor(int16_t speed, uint16_t degree)
     {
-        MMLower::RESULT result = mmL.SetDCMotorRotate(_id, power, degree);
+        MMLower::RESULT result = mmL.SetDCMotorRotate(_id, speed, degree);
         return (result == MMLower::RESULT::OK);
     }
 
@@ -66,7 +66,7 @@ public:
         return counter;
     }
 
-    int32_t getDegress(void)
+    int32_t getDegrees(void)
     {
         int32_t         counter = 0;
         MMLower::RESULT result  = mmL.GetEncoderCounter(_id, counter);
@@ -77,6 +77,15 @@ public:
     {
         MMLower::RESULT result = mmL.SetEncoderResetCounter(_id);
         return (result == MMLower::RESULT::OK);
+    }
+
+    bool setBreak(bool brake)
+    {
+        if (brake) {
+            MMLower::RESULT result = mmL.SetDCMotorPower(_id, 0);
+            return (result == MMLower::RESULT::OK);
+        }
+        return true;
     }
 
 private:

@@ -1,14 +1,3 @@
-/**
- * @file MMLower.h
- * @author Zack Huang (zackhuang0513@gmail.com)
- * @brief Matrix Mini Lower Computer
- * @version 1.0.0
- * @date 2024-02-25
- *
- * @copyright Copyright (c) 2024
- *
- */
-
 #ifndef MMLOWER_H
 #define MMLOWER_H
 

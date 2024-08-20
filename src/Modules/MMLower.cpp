@@ -1,13 +1,3 @@
-/**
- * @file MMLower.cpp
- * @author Zack Huang (zackhuang0513@gmail.com)
- * @brief Matrix Mini Lower Computer
- * @version 1.0.0
- * @date 2024-02-25
- *
- * @copyright Copyright (c) 2024
- *
- */
 #include "MMLower.h"
 #include "Util/BitConverter.h"
 

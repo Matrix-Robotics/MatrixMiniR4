@@ -1,14 +1,3 @@
-/**
- * @file MatrixMiniR4.cpp
- * @author Zack Huang (zackhuang0513@gmail.com)
- * @brief Matrix Mini Arduino Library
- * @version 1.0.0
- * @date 2024-02-25
- *
- * @copyright Copyright (c) 2024
- *
- */
-
 #include "MatrixMiniR4.h"
 #include "Modules/MMLower.h"
 
