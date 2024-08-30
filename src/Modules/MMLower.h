@@ -81,6 +81,7 @@ public:
         SET_STATE_LED,
         SET_IMU_TO_ZERO,
         SET_PID_PARAM,
+        SET_DC_BRAKE,
 
         // Getting
         GET_BUTTON_STATE = 0x21,
@@ -297,6 +298,7 @@ public:
     RESULT SetMoveDistance(MOVE_TYPE type, MOVE_ACTION action, uint16_t speed, uint16_t enCounter);
     RESULT SetEncoderResetCounter(uint8_t num);
     RESULT SetPIDParam(uint8_t num, uint8_t pidNum, float kp, float ki, float kd);
+    RESULT SetDCBrake(uint8_t num);
     // Getting
     RESULT GetButtonState(uint8_t num, bool& btnState);
     RESULT GetButtonsState(bool* btnsState);

@@ -79,13 +79,15 @@ public:
         return (result == MMLower::RESULT::OK);
     }
 
-    bool setBreak(bool brake)
+    bool setBrake(bool brake)
     {
         if (brake) {
-            MMLower::RESULT result = mmL.SetDCMotorPower(_id, 0);
+            MMLower::RESULT result = mmL.SetDCBrake(_id);
+            return (result == MMLower::RESULT::OK);
+        } else {
+            MMLower::RESULT result = mmL.SetDCMotorSpeed(_id, 0);
             return (result == MMLower::RESULT::OK);
         }
-        return true;
     }
 
 private:

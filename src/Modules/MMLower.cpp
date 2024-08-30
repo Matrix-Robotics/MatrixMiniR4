@@ -636,6 +636,30 @@ MMLower::RESULT MMLower::SetPIDParam(uint8_t num, uint8_t pidNum, float kp, floa
     return RESULT::ERROR;
 }
 
+MMLower::RESULT MMLower::SetDCBrake(uint8_t num)
+{
+    MR4_DEBUG_PRINT_HEADER(F("[SetDCBrake]"));
+
+    uint8_t data[1] = {(1 << --num)};
+    CommSendData(COMM_CMD::SET_DC_BRAKE, data, 1);
+    if (!WaitData(COMM_CMD::SET_DC_BRAKE, 100)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_WAIT_TIMEOUT"));
+        return RESULT::ERROR_WAIT_TIMEOUT;
+    }
+
+    uint8_t b[1];
+    if (!CommReadData(b, 1)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
+        return RESULT::ERROR_READ_TIMEOUT;
+    }
+    if (b[0] == 0x00) {
+        MR4_DEBUG_PRINT_TAIL(F("OK"));
+        return RESULT::OK;
+    }
+
+    MR4_DEBUG_PRINT_TAIL(F("ERROR"));
+    return RESULT::ERROR;
+}
 
 MMLower::RESULT MMLower::SetStateLED(uint8_t brightness, uint32_t colorRGB)
 {
