@@ -898,6 +898,28 @@ MMLower::RESULT MMLower::GetPowerInfo(float& curVolt, float& curVoltPerc)
     MR4_DEBUG_PRINT_TAIL(F("OK"));
     return RESULT::OK;
 }
+
+MMLower::RESULT MMLower::GetRotateState(uint8_t num, bool& isEnd)
+{
+    MR4_DEBUG_PRINT_HEADER(F("[GetRotateState]"));
+
+    uint8_t data[1] = {--num};
+    CommSendData(COMM_CMD::GET_ROTATE_STATE, data, 1);
+    if (!WaitData(COMM_CMD::GET_ROTATE_STATE, 100)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_WAIT_TIMEOUT"));
+        return RESULT::ERROR_WAIT_TIMEOUT;
+    }
+
+    uint8_t b[1];
+    if (!CommReadData(b, 1)) {
+        MR4_DEBUG_PRINT_TAIL(F("ERROR_READ_TIMEOUT"));
+        return RESULT::ERROR_READ_TIMEOUT;
+    }
+    isEnd = b[0];
+
+    MR4_DEBUG_PRINT_TAIL(F("OK"));
+    return RESULT::OK;
+}
 // Other-Info
 MMLower::RESULT MMLower::EchoTest(void)
 {

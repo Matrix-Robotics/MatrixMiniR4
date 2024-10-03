@@ -92,6 +92,7 @@ public:
         GET_IMU_GYRO,
         GET_IMU_ACC,
         GET_POWER_INFO,
+        GET_ROTATE_STATE,
 
         // Auto-Send
         AUTO_SEND_BUTTON_STATE = 0x31,
@@ -308,6 +309,7 @@ public:
     RESULT GetIMUGyro(double& x, double& y, double& z);
     RESULT GetIMUAcc(double& x, double& y, double& z);
     RESULT GetPowerInfo(float& curVolt, float& curVoltPerc);
+    RESULT GetRotateState(uint8_t num, bool& isEnd);
     // Other-Info
     RESULT EchoTest(void);
     RESULT GetFWVersion(String& version);

@@ -90,6 +90,12 @@ public:
         }
     }
 
+    bool ChkRotateEnd(bool& isEnd)
+    {
+        MMLower::RESULT result = mmL.GetRotateState(_id, isEnd);
+        return (result == MMLower::RESULT::OK);
+    }
+
 private:
     uint8_t _id;
 };
