@@ -22,6 +22,7 @@ bool MatrixMiniR4::begin()
 
     OLED = Adafruit_SSD1306(128, 32, &Wire1, -1);
     OLED.begin(SSD1306_SWITCHCAPVCC, MATRIXMINIR4_OLED_ADDRESS);
+    OLED.setTextColor(SSD1306_WHITE); //Default Color White
     OLED.clearDisplay();
     OLED.display();
 
