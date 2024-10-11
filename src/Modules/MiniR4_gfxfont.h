@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4_gfxfont.h
+ * @brief Adafruit SSD1306 dependency code
+ * @author MATRIX Robotics
+ */
 /*
 The MIT License (MIT)
 

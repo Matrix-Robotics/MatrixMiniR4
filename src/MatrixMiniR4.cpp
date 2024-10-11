@@ -1,8 +1,31 @@
+/**
+ * @file MatrixMiniR4.cpp
+ * @brief Implementation of the MatrixMiniR4 class for initializing and controlling hardware modules.
+ * 
+ * This file contains the implementation of the MatrixMiniR4 class, which manages various hardware components
+ * such as motors, servos, LEDs, and displays. The `begin` method initializes these components, configures the 
+ * OLED display, and sets up the MJ2 gamepad interface. If the initialization fails, it displays an error message 
+ * on the OLED and sounds a buzzer.
+ * 
+ * @note The initialization sequence includes waiting for motors and servos controller to be ready and displaying an error
+ * message if the MMLower initialization fails.
+ * 
+ * @see MatrixMiniR4.h
+ */
 #include "MatrixMiniR4.h"
 #include "Modules/MMLower.h"
 
 MatrixMiniR4::MatrixMiniR4() {}
 
+/**
+ * @brief Initialize the MatrixMiniR4 system and its components.
+ * 
+ * This function initializes the MMLower (STM32) system, sets up the RGB LED and buzzer, 
+ * and pre init for all DC motors and servos =. It also configures the 
+ * OLED display and the MJ2 gamepad.
+ * 
+ * @return true if initialization was successful, false otherwise.
+ */
 bool MatrixMiniR4::begin()
 {
     MMLower::RESULT result = mmL.Init();
@@ -48,4 +71,4 @@ bool MatrixMiniR4::begin()
     return true;
 }
 
-MatrixMiniR4 MiniR4;
+MatrixMiniR4 MiniR4; ///< The MiniR4 Main Object.

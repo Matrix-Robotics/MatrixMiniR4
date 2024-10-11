@@ -1,3 +1,9 @@
+/**
+ * @file MiniR4_I2CDevice.h
+ * @brief Adafruit SSD1306 dependency code for I2C
+ * @author MATRIX Robotics
+ * @
+ */
 /*
 The MIT License (MIT)
 
@@ -28,7 +34,12 @@ SOFTWARE.
 #include <Arduino.h>
 #include <Wire.h>
 
-///< The class which defines how we will talk to this device over I2C
+/**
+ * @brief Adafruit I2CDevice Class for OLED
+ *
+ * The class which defines how we will talk to this device over I2C
+ *
+ */
 class Adafruit_I2CDevice {
 public:
   Adafruit_I2CDevice(uint8_t addr, TwoWire *theWire = &Wire);

@@ -1,3 +1,8 @@
+/**
+ * @file BitConverter.cpp
+ * @brief MiniR4 low level functions.
+ * @author MATRIX Robotics
+ */
 #include "BitConverter.h"
 
 uint32_t BitConverter::ToUInt32(uint8_t* value, int startIdx)

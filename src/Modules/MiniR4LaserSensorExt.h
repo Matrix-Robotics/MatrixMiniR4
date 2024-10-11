@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4LaserSensorExt.h
+ * @brief Handling MiniR4.I2Cn Matrix Laser Sensor functions.
+ * @author MATRIX Robotics
+ */
 #ifndef _MiniR4LaserSensorExt_H_
 #define _MiniR4LaserSensorExt_H_
 
@@ -10,6 +15,12 @@
 
 #define MatrixLaser_ADDR 0x26
 
+/**
+ * @brief Class for interfacing with a laser distance sensor.
+ *
+ * This class provides methods to read distance measurements from a laser sensor
+ * over I2C.
+ */
 class MatrixLaser
 {
 private:
@@ -29,7 +40,18 @@ public:
     uint8_t  _ch = 0;
     TwoWire* _pWire;
 
+    /**
+     * @brief Initializes the laser sensor.
+     *
+     * @return True if initialization is successful, false otherwise.
+     */
     bool     begin();
+
+    /**
+     * @brief Gets the distance measured by the laser sensor.
+     *
+     * @return The measured distance in millimeters.
+     */
     uint16_t getDistance();
 };
 

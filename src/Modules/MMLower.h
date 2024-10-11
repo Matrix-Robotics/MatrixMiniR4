@@ -1,3 +1,8 @@
+/**
+ * @file MMLower.h
+ * @brief Handling the Lower MCU (STM32) communication.
+ * @author MATRIX Robotics
+ */
 #ifndef MMLOWER_H
 #define MMLOWER_H
 
@@ -40,6 +45,9 @@
 #define DIR_REVERSE (MatrixMiniR4::DIR::REVERSE)
 #define DIR_FORWARD (MatrixMiniR4::DIR::FORWARD)
 
+/**
+ * @brief Handling the Lower MCU (STM32) communication.
+ */
 class MMLower
 {
 public:

@@ -1,33 +1,17 @@
-/*
-    Ultrasonic.cpp Ultrasonic.h
-    A library for ultrasonic ranger
-
-    Copyright (c) 2012 seeed technology inc.
-    Website    : www.seeed.cc
-    Author     : LG, FrankieChu
-    Create Time: Jan 17,2013
-    Change Log : Combine into MATRIX Mini R4 DI Lib.
-
-    The MIT License (MIT)
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
-*/
+/**
+ * @file MiniR4_Grove_US.h
+ * @brief A library for interfacing with the Grove Ultrasonic Ranger sensor.
+ * 
+ * This library provides functions to measure distances using the Grove Ultrasonic Ranger sensor.
+ * It supports measuring in centimeters, millimeters, and inches.
+ * 
+ * Add: Merge into MiniR4.Dn instance.
+ * 
+ * @author LG, FrankieChu
+ * @version 1.0
+ * @date January 17, 2013
+ * @copyright MIT License
+ */
 
 #ifndef MINIR4_Grove_US_H
 #define MINIR4_Grove_US_H
@@ -71,6 +55,17 @@ static uint32_t pulseIn(uint32_t pin, uint32_t state, uint32_t timeout = 1000000
 
 #endif // ARDUINO_ARCH_STM32F4
 
+/**
+ * @class MiniR4_Grove_US
+ * @brief A class for interfacing with Grove Ultrasonic Ranger.
+ * 
+ * This class allows measuring distances in centimeters, millimeters, and inches using 
+ * the Grove Ultrasonic Ranger sensor. It works by sending ultrasonic pulses and measuring 
+ * the time taken for the pulse to return.
+ * 
+ * @tparam PIN1 Unused pin (for future use).
+ * @tparam PIN2 Pin number where the sensor is connected.
+ */
 template <uint8_t PIN1, uint8_t PIN2> class MiniR4_Grove_US {
   public: 
   
@@ -78,21 +73,36 @@ template <uint8_t PIN1, uint8_t PIN2> class MiniR4_Grove_US {
     _pin = PIN2; //目前在DI R，未來可改成DI_L與MATRIX Sensor系統同步
   }
 
-  /*The measured distance from the range 0 to 400 Centimeters*/
+  /**
+   * @brief Measures the distance in centimeters.
+   *
+   * @param timeout Timeout in microseconds (default: 1 second).
+   * @return The measured distance in centimeters.
+   */
   long MeasureInCentimeters(uint32_t timeout = 1000000L) {
     long RangeInCentimeters;
     RangeInCentimeters = duration(timeout) / 29 / 2;
     return RangeInCentimeters;
   }
 
-  /*The measured distance from the range 0 to 4000 Millimeters*/
+  /**
+   * @brief Measures the distance in millimeters.
+   *
+   * @param timeout Timeout in microseconds (default: 1 second).
+   * @return The measured distance in millimeters.
+   */
   long MeasureInMillimeters(uint32_t timeout = 1000000L) {
     long RangeInMillimeters;
     RangeInMillimeters = duration(timeout) * (10 / 2) / 29;
     return RangeInMillimeters;
   }
 
-  /*The measured distance from the range 0 to 157 Inches*/
+  /**
+   * @brief Measures the distance in inches.
+   *
+   * @param timeout Timeout in microseconds (default: 1 second).
+   * @return The measured distance in inches.
+   */
   long MeasureInInches(uint32_t timeout = 1000000L) {
     long RangeInInches;
     RangeInInches = duration(timeout) / 74 / 2;

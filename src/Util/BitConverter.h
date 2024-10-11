@@ -1,8 +1,16 @@
+/**
+ * @file BitConverter.h
+ * @brief MiniR4 low level functions.
+ * @author MATRIX Robotics
+ */
 #ifndef BITCONVERTER_H
 #define BITCONVERTER_H
 
 #include <stdint.h>
 
+/**
+ * @brief MiniR4 low level functions.
+ */
 class BitConverter
 {
 public:

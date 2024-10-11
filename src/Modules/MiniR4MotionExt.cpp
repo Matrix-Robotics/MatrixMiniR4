@@ -1,3 +1,9 @@
+/**
+ * @file MiniR4MotionExt.cpp
+ * @brief Handling Matrix Motion Sensor functions.
+ * @author MATRIX Robotics
+ */
+
 #include "MiniR4MotionExt.h"
 
 bool MatrixMotion::begin()

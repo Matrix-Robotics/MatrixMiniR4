@@ -1,3 +1,9 @@
+/**
+ * @file MiniR4OLED.cpp
+ * @brief Handling MiniR4.OLED functions. (Full Wrapping from Adafruit_SSD1306)
+ * @author MATRIX Robotics
+ */
+
 /*
 The MIT License (MIT)
 

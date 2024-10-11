@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4I2CDevice.cpp
+ * @brief MiniR4 I2C low level functions.
+ */
+
 #include "MiniR4I2CDevice.h"
 
 // #define DEBUG_SERIAL Serial

@@ -1,33 +1,17 @@
-/*
-    Seeed_BME280.h
-    Example sketch for bme280
-
-    Copyright (c) 2016 seeed technology inc.
-    Website    : www.seeedstudio.com
-    Author     : Lambor
-    Create Time:
-    Change Log : Rework for combine into MATRIX Mini R4 IIC system.
-
-    The MIT License (MIT)
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in
-    all copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-    THE SOFTWARE.
-*/
+/**
+ * @file MiniR4_GroveI2C_BME280.h
+ * @brief A library for interfacing with the BME280 sensor via I2C.
+ * 
+ * This library provides functions to read temperature, pressure, and humidity data from the BME280 sensor.
+ * It also includes calibration data handling and altitude calculation based on pressure.
+ * 
+ * Add: Merge into MiniR4.I2C instance.
+ * 
+ * @author Lambor
+ * @version 1.0
+ * @date 2016
+ * @copyright MIT License
+ */
 #ifndef _MiniR4_GroveI2C_BME280_H_
 #define _MiniR4_GroveI2C_BME280_H_
 
@@ -74,6 +58,13 @@
 #define BME280_REG_TEMPDATA        0xFA
 #define BME280_REG_HUMIDITYDATA    0xFD
 
+/**
+ * @class GroveI2C_BME280
+ * @brief A class for interfacing with the BME280 sensor.
+ *
+ * This class allows reading temperature, pressure, and humidity data from the BME280 sensor.
+ * It also provides functions to calculate altitude based on pressure readings.
+ */
 class GroveI2C_BME280{
 	private:
 		int _devAddr;
@@ -113,11 +104,41 @@ class GroveI2C_BME280{
 	public:	
 		uint8_t _ch=0;
 		TwoWire* _pWire;
-		
+
+		/**
+		 * @brief Initializes the BME280 sensor.
+		 *
+		 * @param i2c_addr The I2C address of the BME280 sensor (default is BME280_ADDRESS).
+		 * @return true if initialization is successful, false otherwise.
+		 */
 		bool begin(int i2c_addr = BME280_ADDRESS);
+		/**
+		 * @brief Reads the temperature from the BME280 sensor.
+		 *
+		 * @return The temperature in degrees Celsius.
+		 */
 		float getTemperature(void);
+
+		/**
+		 * @brief Reads the pressure from the BME280 sensor.
+		 *
+		 * @return The pressure in hPa.
+		 */
 		float getPressure(void);
+
+		/**
+		 * @brief Reads the humidity from the BME280 sensor.
+		 *
+		 * @return The humidity as a percentage.
+		 */
 		float getHumidity(void);
+
+		/**
+		 * @brief Calculates the altitude based on the pressure reading.
+		 *
+		 * @param pressure The pressure in hPa.
+		 * @return The calculated altitude in meters.
+		 */
 		float calcAltitude(float pressure);
 
 };

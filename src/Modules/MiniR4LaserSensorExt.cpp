@@ -1,3 +1,9 @@
+/**
+ * @file MiniR4LaserSensorExt.cpp
+ * @brief Handling MiniR4.I2Cn Matrix Laser Sensor functions.
+ * @author MATRIX Robotics
+ */
+
 #include "MiniR4LaserSensorExt.h"
 
 bool MatrixLaser::begin()

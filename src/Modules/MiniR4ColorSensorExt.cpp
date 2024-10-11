@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4ColorSensorExt.cpp
+ * @brief Matric Color Sensor functions.
+ * @author MATRIX Robotics
+ */
 #include "MiniR4ColorSensorExt.h"
 
 bool MatrixColor::begin()
@@ -44,34 +49,19 @@ void MatrixColor::setLight(bool state, bool mode, uint8_t pwm)
     i2cWriteData(Device_LIGHT, pwm);
 }
 
+
 uint8_t MatrixColor::getColor(ColorType color)
 {
     i2cMUXSelect();
     return i2cReadData(ColorRegType(color));
 }
 
+
 uint8_t MatrixColor::getGrayscale()
 {
     return i2cReadData(Device_GRAY);
 }
 
-/*
-    Number of color as follow as below:
-    0:Black
-    1:White
-    2:Cyan
-    3:Ocean
-    4:Blue
-    5:Violet
-    6:Magenta
-    7:Raspberry
-    8:Red
-    9:Orange
-    10:Yellow
-    11:Spring Green
-    12:Green
-    13:Turquoise
-*/
 uint8_t MatrixColor::getColorNumber()
 {
     i2cMUXSelect();

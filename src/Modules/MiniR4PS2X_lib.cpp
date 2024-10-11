@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4PS2X_lib.cpp
+ * @brief Merge PS2X Lib into Mini R4.
+ */
+
 #include "MiniR4PS2X_lib.h"
 #include <math.h>
 #include <stdint.h>

@@ -22,8 +22,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+/**
+ * @file MiniR4OLED.h
+ * @brief Handling MiniR4.OLED functions. (Full Wrapping from Adafruit_SSD1306)
+ * @author MATRIX Robotics
+ */
+
 /*!
- * @file Adafruit_SSD1306.h
+ * Orginal file Adafruit_SSD1306.h
  *
  * This is part of for Adafruit's SSD1306 library for monochrome
  * OLED displays: http://www.adafruit.com/category/63_98

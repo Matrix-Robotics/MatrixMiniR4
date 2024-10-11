@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4PS2X_lib.h
+ * @brief Merge PS2X Lib into Mini R4.
+ */
+
 /******************************************************************
 *  Super amazing PS2 controller Arduino Library v1.8
 *		details and example sketch:
@@ -164,24 +169,132 @@ details. <http://www.gnu.org/licenses/>
 #define CHK(x, y) (x & (1 << y))
 #define TOG(x, y) (x ^= (1 << y))
 
+/**
+ * @brief Class to interface with the MJ2 or PS2 controller.
+ * 
+ * Once you call MiniR4.begin(), PS2X will auto begin.
+ * Note: Please Connect 4p wire to D2 (Left: DAT, Right: CMD, V, G), 2p wire to D3 (Left: CSS/SET, Right: CLK)
+ *
+ * This class provides methods to read button states, configure the controller, and handle analog inputs.
+ */
 class PS2X
 {
 public:
+    /**
+     * @brief Checks if a button is currently pressed.
+     *
+     * @param button The button constant to check.
+     * @return true if the button is being pressed, false otherwise.
+     */
     boolean      Button(uint16_t);   // will be TRUE if button is being pressed
+    
+    /**
+     * @brief Reads the button data byte.
+     *
+     * @return The button data byte.
+     */
     unsigned int ButtonDataByte();
+
+    /**
+     * @brief Checks for new button state.
+     *
+     * @return true if there is a new button state, false otherwise.
+     */
     boolean      NewButtonState();
+
+    /**
+     * @brief Checks for new button state for a specific button.
+     *
+     * @param button The button constant to check.
+     * @return true if the button was just pressed or released, false otherwise.
+     */
     boolean NewButtonState(unsigned int);   // will be TRUE if button was JUST pressed OR released
+
+    /**
+     * @brief Checks if a button was just pressed.
+     *
+     * @param button The button constant to check.
+     * @return true if the button was just pressed, false otherwise.
+     */
     boolean ButtonPressed(unsigned int);    // will be TRUE if button was JUST
                                             // pressed
+
+    /**
+     * @brief Checks if a button was just released.
+     *
+     * @param button The button constant to check.
+     * @return true if the button was just released, false otherwise.
+     */
     boolean ButtonReleased(unsigned int);   // will be TRUE if button was JUST released
+
+    /**
+     * @brief Reads the gamepad state.
+     */
     void    read_gamepad();
+
+    /**
+     * @brief Reads the gamepad state with options.
+     *
+     * @param motor1 Motor1.
+     * @param motor2 Motor2.
+     * @return true if the read was successful.
+     */
     boolean read_gamepad(boolean, byte);
+
+    /**
+     * @brief Returns the controller type.
+     *
+     * @return The controller type byte.
+     */
     byte    readType();
+
+    /**
+     * @brief Configures the gamepad.
+     *
+     * @param clk Pin for clock.
+     * @param cmd Pin for command.
+     * @param att Pin for attention.
+     * @param dat Pin for data.
+     * @return Status byte.
+     */
     byte    config_gamepad(uint8_t, uint8_t, uint8_t, uint8_t);
+
+    /**
+     * @brief Configures the gamepad with additional options.
+     *
+     * @param clk Pin for clock.
+     * @param cmd Pin for command.
+     * @param att Pin for attention.
+     * @param dat Pin for data.
+     * @param pressures Enable pressure sensitivity. (MJ2 not avaiable)
+     * @param rumble Enable rumble functionality. (MJ2 not avaiable)
+     * @return Status byte.
+     */
     byte    config_gamepad(uint8_t, uint8_t, uint8_t, uint8_t, bool, bool);
+
+    /**
+     * @brief Enables rumble functionality on the controller.
+     */
     void    enableRumble();
+
+    /**
+     * @brief Enables pressure sensitivity on the controller.
+     *
+     * @return true if pressures are enabled, false otherwise.
+     */
     bool    enablePressures();
+
+    /**
+     * @brief Reads the analog value from the specified analog stick.
+     *
+     * @param stick The analog stick identifier.
+     * @return The analog value.
+     */
     byte    Analog(byte);
+
+    /**
+     * @brief Reconfigures the gamepad.
+     */
     void    reconfig_gamepad();
 
 private:

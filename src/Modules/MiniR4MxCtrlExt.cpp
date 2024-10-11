@@ -1,6 +1,12 @@
+/**
+ * @file MiniR4MxCtrlExt.cpp
+ * @brief Handling Matrix Controller (HT) functions.
+ * @author MATRIX Robotics
+ */
 #include "MiniR4MxCtrlExt.h"
 
-void MatrixController::begin(){//motor reset / servo reset/set serve speed to 0 (fastest)
+
+void MatrixController::begin(){
 	i2cMUXSelect();
 
 	i2cWriteData(MC_REG_TIMEOUT, 0); // disable timeout
@@ -49,6 +55,7 @@ void MatrixController::motorRound(uint8_t motor_ch, float round){
 	}
 	
 }
+
 
 void MatrixController::motorInvert(uint8_t motor_ch, bool invert){
 	if(invert){

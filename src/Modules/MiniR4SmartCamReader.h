@@ -1,7 +1,19 @@
+/**
+ * @file MiniR4SmartCamReader.h
+ * @brief Handling MiniR4.SmartCamReader functions.
+ * @author MATRIX Robotics
+ */
 #ifndef MINIR4_SMART_CAM_READER
 #define MINIR4_SMART_CAM_READER
 
 #include <Arduino.h>
+
+/**
+ * @brief A class for reading data from mVision camera.
+ *
+ * This class provides functionality to initialize the mVision
+ * communication and read valid data from the mVision.
+ */
 
 class MiniR4SmartCamReader
 {
@@ -10,10 +22,27 @@ public:
     MiniR4SmartCamReader() {}
     ~MiniR4SmartCamReader() {}
 
-    bool hasReceivedValidData = false;   // 记录是否收到过有效数据
+    bool hasReceivedValidData = false;   ///< Flag to indicate if valid data has been received.
 
+    /**
+     * @brief Initializes the serial communication with the smart camera.
+     */
     void Begin(void) { Serial1.begin(115200); }
 
+    /**
+     * @brief Reads data from the smart camera.
+     *
+     * This function waits for data from the smart camera and returns
+     * the decoded data if it is valid. It uses a timeout to prevent
+     * blocking indefinitely.
+     *
+     * @param data Pointer to an array where the received data will be stored.
+     * @param timeout Time in milliseconds to wait for data (default is 500).
+     * @return The number of data items read, or a negative error code:
+     *         -1 if timeout occurred,
+     *         -2 if data is incomplete,
+     *         -3 if checksum validation fails.
+     */
     int SmartCamReader(unsigned int* data, unsigned int timeout = 500)
     {
         byte         length, check;     // 声明局部变量

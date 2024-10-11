@@ -14,11 +14,12 @@ Support 2 channel UART Interface (USB Serial and UART Serial).<br>
 Support 2 buttons and OLED Screen.<br>
 Battery voltage monitor status LED.<br>
 ## Repository Contents
-* [**/docs**](./docs) - (TBD) Matrix Servo Extension documentation. 
+* [**/docs**](./docs) - Library API documentation.
 * [**/examples**](./examples) - Example sketches for the library (.ino). Run these by Arduino IDE.
 * [**/src**](./src) - Source files for the library (.cpp, .h).
 
 ## Documentation
+[MatrixMiniR4 Library API documentation](https://matrix-robotics.github.io/MatrixMiniR4/)
 [MATRIX Official Website](https://matrixrobotics.com/)
 ## License
 MIT

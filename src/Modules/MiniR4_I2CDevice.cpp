@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4_I2CDevice.cpp
+ * @brief Adafruit SSD1306 dependency code for I2C
+ * @author MATRIX Robotics
+ */
 /*
 The MIT License (MIT)
 

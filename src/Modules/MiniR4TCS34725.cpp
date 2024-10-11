@@ -1,3 +1,7 @@
+/**
+ * @file MiniR4TCS34725.cpp
+ * @brief Handling TCS34725 Color Sensor support (currently replace by MXColor).
+ */
 #include <math.h>
 #include <stdlib.h>
 

@@ -1,8 +1,17 @@
+/**
+ * @file BaseUtil.h
+ * @brief MiniR4 low level functions.
+ * @author MATRIX Robotics
+ */
+
 #ifndef BASEUTIL_H
 #define BASEUTIL_H
 
 #include <stdint.h>
 
+/**
+ * @brief MiniR4 low level functions.
+ */
 class BaseUtil
 {
 public:

@@ -1,3 +1,7 @@
+/**
+ * @file MiniR4I2CDevice.h
+ * @brief MiniR4 I2C low level functions.
+ */
 #ifndef MiniR4I2CDevice_H
 #define MiniR4I2CDevice_H
 
@@ -8,7 +12,10 @@
 #    define ADDR_PCA954X 0x70
 #endif
 
-///< The class which defines how we will talk to this device over I2C
+/**
+ * @brief The class which defines how we will talk to this device over I2C
+ *
+ */
 class MiniR4_I2CDevice
 {
 public:

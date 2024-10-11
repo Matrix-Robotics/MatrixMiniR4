@@ -1,15 +1,16 @@
 /**
- * MiniR4_DS18B20.h
- * Add requestAndGetTemp().
+ * @file MiniR4_DS18B20.h
+ * @brief Lightweight library for working with 1-Wire Dallas DS18B20 thermometers.
+ *
+ * This library provides functions to work with DS18B20 temperature sensors using the 1-Wire protocol.
+ * It supports reading the temperature, setting resolution, and handling CRC checks.
+ * 
+ * Add: Merge into MiniR4.Dn instance.
+ * 
+ * @author Egor 'Nich1con' Zakharov & AlexGyver
+ * @license MIT
  */
-/*
-    Lightweight library for working with 1-Wire (OneWire) Dallas DS18B20 thermometers.
-    Documentation:
-    GitHub: https://github.com/GyverLibs/microDS18B20
-    Egor 'Nich1con' Zakharov & AlexGyver, alex@alexgyver.ru
-    https://alexgyver.ru/
-    MIT License
-*/
+
 #ifndef MINIR4_DS18B20_H
 #define MINIR4_DS18B20_H
 
@@ -61,6 +62,19 @@ static uint8_t _empDsAddr[1] = {1};
 #pragma GCC diagnostic pop
 #define DS_ADDR_MODE _empDsAddr
 
+/**
+ * @class MiniR4DS18B20
+ * @brief Template class for interfacing with DS18B20 temperature sensors.
+ * 
+ * This class allows interfacing with DS18B20 sensors using the 1-Wire protocol. It supports multiple sensors
+ * on the same line, addressable mode, and CRC checks.
+ * 
+ * @tparam PIN1 Unused pin (for future use).
+ * @tparam PIN2 The GPIO pin number where the sensor is connected.
+ * @tparam DS_ADDR Pointer to the sensor's address.
+ * @tparam DS_AM Number of sensors on the line.
+ * @tparam DS_PGM If true, addresses are stored in PROGMEM.
+ */
 template <uint8_t PIN1, uint8_t PIN2, uint8_t * DS_ADDR = (uint8_t * ) nullptr, uint8_t DS_AM = 1, bool DS_PGM = 0> class MiniR4DS18B20 {
   public:
 
@@ -70,7 +84,11 @@ template <uint8_t PIN1, uint8_t PIN2, uint8_t * DS_ADDR = (uint8_t * ) nullptr, 
       digitalWrite(DS_PIN, LOW);
     }
 	
-	// Set the thermometer resolution to 9-12 bits
+    /**
+     * @brief Sets the resolution for a specific sensor.
+     * @param res Resolution in bits (9-12).
+     * @param idx Index of the sensor (default: 0).
+     */
     void setResolution(uint8_t res, uint8_t idx = 0) {
       if (!oneWire_reset(DS_PIN)) return; // Проверка присутствия
       addressRoutine(idx); // Процедура адресации
@@ -80,17 +98,27 @@ template <uint8_t PIN1, uint8_t PIN2, uint8_t * DS_ADDR = (uint8_t * ) nullptr, 
       oneWire_write(((constrain(res, 9, 12) - 9) << 5) | 0x1F, DS_PIN); // Запись конфигурации разрешения
     }
 
-    // Set the thermometer resolution to 9-12 bits for all sensors on the line
+    /**
+     * @brief Sets the resolution for all sensors on the line.
+     * @param res Resolution in bits (9-12).
+     */
     void setResolutionAll(uint8_t res) {
       for (int i = 0; i < DS_AM; i++) setResolution(res, i);
     }
 
-    // Set the address
+    /**
+     * @brief Set the address of the sensor.
+     * @param addr Pointer to the sensor's address.
+     */
     void setAddress(uint8_t * addr) {
       _addr = addr;
     }
 
-    // Read the unique address of the thermometer into the array
+    /**
+     * @brief Reads the unique address of the sensor.
+     * @param addr Pointer to the array where the address will be stored.
+     * @return true if the address was successfully read, false otherwise.
+     */
     bool readAddress(uint8_t * addr) {
       if (!oneWire_reset(DS_PIN)) return 0; // Проверка присутствия
       oneWire_write(0x33, DS_PIN); // Запрос адреса
@@ -106,7 +134,10 @@ template <uint8_t PIN1, uint8_t PIN2, uint8_t * DS_ADDR = (uint8_t * ) nullptr, 
       return !(sum == 0x8F7 || !sum || crc); // CRC не сошелся или адрес нулевой - ошибка
     }
 
-    // Request temperature
+    /**
+     * @brief Requests a temperature conversion from a specific sensor.
+     * @param idx Index of the sensor (default: 0).
+     */
     void requestTemp(uint8_t idx = 0) {
       state[idx] = 0; // запрошена новая температура
       if (!oneWire_reset(DS_PIN)) return; // Проверка присутствия
@@ -114,38 +145,60 @@ template <uint8_t PIN1, uint8_t PIN2, uint8_t * DS_ADDR = (uint8_t * ) nullptr, 
       oneWire_write(0x44, DS_PIN); // Запросить преобразование
     }
 
-    // Request temperature from all sensors on the line
+    /**
+     * @brief Requests a temperature conversion from all sensors on the line.
+     */
     void requestTempAll() {
       for (int i = 0; i < DS_AM; i++) requestTemp(i);
     }
 
-    // Get temperature as a float
+    /**
+     * @brief Gets the temperature as a float from a specific sensor.
+     * @param idx Index of the sensor (default: 0).
+     * @return Temperature in Celsius as a float.
+     */
     float getTemp(uint8_t idx = 0) {
       if (!state[idx]) readTemp(idx);
       return (_buf[idx] / 16.0);
     }
 	
-	// Combine Request and Get temperature as a float
+	  /**
+     * @brief Combines request and get temperature operations.
+     * @param idx Index of the sensor (default: 0).
+     * @return Temperature in Celsius as a float.
+     */
     float requestAndGetTemp(uint8_t idx = 0) {
-	  requestTemp(idx);
-	  delay(1);
+	    requestTemp(idx);
+	    delay(1);
       if (!state[idx]) readTemp(idx);
       return (_buf[idx] / 16.0);
     }
 
-    // Get temperature as an int
+    /**
+     * @brief Gets the temperature as an integer from a specific sensor.
+     * @param idx Index of the sensor (default: 0).
+     * @return Temperature in Celsius as an integer.
+     */
     int16_t getTempInt(uint8_t idx = 0) {
       if (!state[idx]) readTemp(idx);
       return (_buf[idx] >> 4);
     }
 
-    // Get the "raw" temperature value
+    /**
+     * @brief Gets the raw temperature data from a specific sensor.
+     * @param idx Index of the sensor (default: 0).
+     * @return Raw temperature data.
+     */
     int16_t getRaw(uint8_t idx = 0) {
       if (!state[idx]) readTemp(idx);
       return _buf[idx];
     }
 
-    // Read temperature from the sensor. Returns true if successful
+    /**
+     * @brief Reads the temperature from a specific sensor.
+     * @param idx Index of the sensor (default: 0).
+     * @return true if the temperature was successfully read, false otherwise.
+     */
     bool readTemp(uint8_t idx = 0) {
       state[idx] = 1;
       if (!oneWire_reset(DS_PIN)) return 0; // датчик оффлайн
@@ -168,7 +221,11 @@ template <uint8_t PIN1, uint8_t PIN2, uint8_t * DS_ADDR = (uint8_t * ) nullptr, 
       return 1;
     }
 
-    // Check connection with the sensor (true - sensor online). THE LINE MUST BE PULLED UP
+    /**
+     * @brief Checks if the sensor is online.
+     * @param idx Index of the sensor (default: 0). THE LINE MUST BE PULLED UP
+     * @return true if the sensor is online, false otherwise.
+     */ 
     bool online(uint8_t idx = 0) {
       if (DS_ADDR != nullptr) {
         if (!oneWire_reset(DS_PIN)) return 0;

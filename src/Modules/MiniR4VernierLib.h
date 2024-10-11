@@ -1,10 +1,19 @@
-
+/**
+ * @file MiniR4VernierLib.h
+ * @brief Handling MiniR4.Vernier functions.
+ * @author MATRIX Robotics
+ */
 #ifndef MiniR4VernierLib_h
 #    define MiniR4VernierLib_h
 #    include <math.h>
 #    define VERNIERLIB_LIB_VERSION "1.0.6"   // displayed automatically
 
-
+/**
+ * @brief A library for interfacing with Vernier sensors.
+ *
+ * This class provides methods to read sensor data, control DCUs,
+ * and manage calibration information for Vernier sensors.
+ */
 class MiniR4VernierLib
 {
 public:

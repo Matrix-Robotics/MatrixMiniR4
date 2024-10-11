@@ -1,3 +1,8 @@
+/**
+ * @file MMLower.cpp
+ * @brief Handling the Lower MCU (STM32) communication.
+ * @author MATRIX Robotics
+ */
 #include "MMLower.h"
 #include "Util/BitConverter.h"
 

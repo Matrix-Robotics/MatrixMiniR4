@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4VernierLib.cpp
+ * @brief Handling MiniR4.Vernier functions.
+ * @author MATRIX Robotics
+ */
 /* This is a library to make using Vernier LabQuest sensors and the Digital Control Unit (DCU)
 with a Vernier Arduino Interface Shield (BT-ARD) easier. There are several useful functions:
 AutoID: reads information about the sensor, including calibration information

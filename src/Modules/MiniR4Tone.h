@@ -1,3 +1,8 @@
+/**
+ * @file MiniR4Tone.h
+ * @brief Define some tone and freq in header file.
+ * @author MATRIX Robotics
+ */
 #ifndef _MiniR4Tone_h
 #define _MiniR4Tone_h
 

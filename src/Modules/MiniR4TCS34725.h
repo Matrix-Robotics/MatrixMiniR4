@@ -1,3 +1,7 @@
+/**
+ * @file MiniR4TCS34725.h
+ * @brief Handling TCS34725 Color Sensor support (currently replace by MXColor).
+ */
 #ifndef MiniR4TCS34725_H
 #define MiniR4TCS34725_H
 

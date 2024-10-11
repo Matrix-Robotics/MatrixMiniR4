@@ -1,11 +1,28 @@
+/**
+ * @file MiniR4LED.h
+ * @brief Handling MiniR4.LED functions.
+ * @author MATRIX Robotics
+ */
+
 #ifndef MINIR4LED_H
 #define MINIR4LED_H
 
+/**
+ * @brief Class for controlling an RGB LED.
+ *
+ * This class provides functionality to set colors and brightness for an RGB LED
+ * connected to a specified pin. It uses the WS2812B protocol for communication.
+ */
 class MiniR4LED
 {
 public:
     MiniR4LED() {}
 
+    /**
+     * @brief Initializes the LED. (Built-in at Uno Pin 7)
+     *
+     * @param pin The pin number to which the LED is connected.
+     */
     void begin(uint8_t pin)
     {
         port_table[0] = R_PORT0;
@@ -29,6 +46,13 @@ public:
         digitalWriteFast(_pin, 0);
     }
 
+    /**
+     * @brief Sets the color of the LED.
+     *
+     * @param idx The index of the LED (1 or 2).
+     * @param rgb The color in RGB format.
+     * @return True if the color was set successfully, false otherwise.
+     */
     bool setColor(uint8_t idx, uint32_t rgb)
     {
         if (idx < 1 || idx > 2) {
@@ -39,12 +63,27 @@ public:
         return true;
     }
 
+    /**
+     * @brief Sets the color of the LED using separate RGB values.
+     *
+     * @param idx The index of the LED (1 or 2).
+     * @param r Red value (0-255).
+     * @param g Green value (0-255).
+     * @param b Blue value (0-255).
+     * @return True if the color was set successfully, false otherwise.
+     */
     bool setColor(uint8_t idx, uint8_t r, uint8_t g, uint8_t b)
     {
         uint32_t rgb = (r << 16) | (g << 8) | b;
         return setColor(idx, rgb);
     }
 
+    /**
+     * @brief Sets the brightness of the LED.
+     *
+     * @param idx The index of the LED (1 or 2).
+     * @param brightness The brightness level (0-255). (Default is 255)
+     */
     void setBrightness(uint8_t idx, uint8_t brightness)
     {
         if (idx < 1 || idx > 2) {
