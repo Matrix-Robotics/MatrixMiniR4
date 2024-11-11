@@ -19,7 +19,7 @@ Battery voltage monitor status LED.<br>
 * [**/src**](./src) - Source files for the library (.cpp, .h).
 
 ## Documentation
-[MatrixMiniR4 Library API documentation](https://matrix-robotics.github.io/MatrixMiniR4/)
+[MatrixMiniR4 Library API documentation](https://matrix-robotics.github.io/Programming-API-Docs/MiniR4_Arduino_Lib_API_Docs/)
 
 [MATRIX Official Website](https://matrixrobotics.com/)
 ## License
