@@ -1,6 +1,6 @@
 /*
   Matrix Mini R4 Motor Example
- * Description: Demonstrates how to use Matrix Mini R4 to control four DC motors.
+ * Description: Demonstrates how to use Matrix Mini R4 to control four DC motors (Encoder Motor).
 
  * Author: Barry
  * Modified 9 Oct 2024
@@ -11,6 +11,7 @@
 
 void setup() {
   MiniR4.begin();
+  MiniR4.PWR.setBattCell(2); //18650 battery x 2
   Serial.begin(115200);
   Serial.println("\nMatrix Mini R4 Test - DC Motor\n");
   Serial.println("Starting Up ... ");
@@ -23,7 +24,8 @@ void setup() {
 
 void loop() {
   int i;
-
+  //If using DC Motor without Encoder, please using setPower(i) instead of setSpeed(i).
+  
   for (i = 0; i < 100; i++) {
     MiniR4.M1.setSpeed(i);
     MiniR4.M2.setSpeed(i);

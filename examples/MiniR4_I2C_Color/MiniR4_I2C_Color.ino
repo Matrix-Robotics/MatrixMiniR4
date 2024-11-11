@@ -15,6 +15,7 @@
 
 void setup() {
   MiniR4.begin();
+  MiniR4.PWR.setBattCell(2); //18650 battery x 2
   Serial.begin(115200);
   Serial.println("\nMatrix Mini R4 Test - I2C Color Sensor\n");
   Serial.println("Starting Up ... \n");
