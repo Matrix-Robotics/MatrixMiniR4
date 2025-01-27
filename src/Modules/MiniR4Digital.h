@@ -6,11 +6,11 @@
 #ifndef MiniR4Digital_H
 #define MiniR4Digital_H
 
-#include "MiniR4HC04.h"
-#include "MiniR4_DHT11.h"
-#include "MiniR4_DS18B20.h"
-#include "MiniR4_Grove_US.h"
-// #include "MiniR4_Grove_TM1637.h"
+#include "Sensors/MiniR4HC04.h"
+#include "Sensors/MiniR4_DHT11.h"
+#include "Sensors/MiniR4_DS18B20.h"
+#include "Sensors/MiniR4_Grove_US.h"
+// #include "Sensors/MiniR4_Grove_TM1637.h"
 #include <Arduino.h>
 
 /**
@@ -116,11 +116,14 @@ public:
         digitalWrite(_pin2, !digitalRead(_pin2));
     }
 
-    MiniR4HC04<PIN1, PIN2> US; // Ultrasonic sensor instance.
-    MiniR4DHT11<PIN1, PIN2> DHT11; // DHT11 temperature and humidity sensor instance.
-    MiniR4DS18B20<PIN1, PIN2> DS18B20; // DS18B20 temperature sensor instance.
+    MiniR4HC04<PIN1, PIN2> US; // MATRIX Ultrasonic sensor instance.
+    MiniR4DHT11<PIN1, PIN2> DHT11; // Grove DHT11 sensor instance.
+    MiniR4DS18B20<PIN1, PIN2> DS18B20; // Grove DS18B20 temperature sensor instance.
     MiniR4_Grove_US<PIN1, PIN2> GroveUS; // Grove ultrasonic sensor(ranger) instance.
     // MiniR4_Grove_TM1637<PIN1, PIN2> GroveTM1637; // Grove 7-segment display instance (TBD).
+	
+	MiniR4DHT11<PIN2, PIN1> MXDHT; // MATRIX DHT11 temperature and humidity sensor instance.
+    MiniR4DS18B20<PIN2, PIN1> MXOnewireDT; // MATRIX DS18B20 temperature sensor instance.
 
 private:
     uint8_t _pin1;

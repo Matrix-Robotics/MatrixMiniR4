@@ -1,19 +1,19 @@
 /*
   Matrix Mini R4 Library Test
 
- * Lib: v1.1.3
- * FW: v3.2
+ * Lib: v1.1.5 or newer
+ * FW: v3.2 or newer
  * Author: Barry
- * Modified: 10 Oct 2024
+ * Modified: 17 Nov 2024
 
   www.matrixrobotics.com
 */
 #include <MatrixMiniR4.h>
 
 void setup() {
-  bool ret = MiniR4.begin();
+  bool ret = MiniR4.begin();  // Initialize the Matrix Mini R4 library
   Serial.begin(115200);
-  MiniR4.PWR.setBattCell(2);  // 18650x2
+  MiniR4.PWR.setBattCell(2);  // 18650x2, two-cell (2S)
 
   MiniR4.LED.setColor(1, 0, 0, 0);  // Turn off LED
   MiniR4.LED.setColor(2, 0, 0, 0);
@@ -70,7 +70,6 @@ void loop() {
   // TaskAI();
   // TaskGrayscale(); // A1
   // TaskI2CColor();  // I2C1
-  // TaskI2CMotion(); // I2C2
   // TaskI2CLaser();  // I2C3
   // TaskI2CMXCtrl(); // I2C4
   // TaskMVision(); // UART
@@ -78,6 +77,12 @@ void loop() {
   // TaskDHT11(); // D1
   // TaskDS18B20(); // D2
   // TaskGroveUS(); // D3
+  // TaskMXColorV3(); // I2C1
+  // TaskMXGesture(); // I2C2
+  // TaskMXLaserV2(); // I2C3
+  // TaskMXDHT();  // D1
+  // TaskOnewireDT();   // D2
+
 }
 
 void TaskLED() {
@@ -173,10 +178,10 @@ void TaskMotorSpeed() {
   int speed = 100;
 
   while (true) {
-    MiniR4.M1.setPower(speed);
-    MiniR4.M2.setPower(speed);
-    MiniR4.M3.setPower(speed);
-    MiniR4.M4.setPower(speed);
+    MiniR4.M1.setSpeed(speed);
+    MiniR4.M2.setSpeed(speed);
+    MiniR4.M3.setSpeed(speed);
+    MiniR4.M4.setSpeed(speed);
     delay(2000);
     speed *= -1;
   }
@@ -198,10 +203,10 @@ void TaskEncoder() {
     Serial.print(", M4: ");
     Serial.println(MiniR4.M4.getDegrees());
 
-    MiniR4.M1.setSpeed(50);
-    MiniR4.M2.setSpeed(50);
-    MiniR4.M3.setSpeed(50);
-    MiniR4.M4.setSpeed(50);
+    MiniR4.M1.setPower(50);
+    MiniR4.M2.setPower(50);
+    MiniR4.M3.setPower(50);
+    MiniR4.M4.setPower(50);
     delay(100);
   }
 }
@@ -286,29 +291,6 @@ void TaskI2CColor() {
     char buff[64];
     sprintf(buff, "R: %3d, G: %3d, B: %3d, C: %3d, M: %3d, Y: %3d, K: %3d\n", r, g, b, c, m, y, k);
     Serial.print(buff);
-
-    delay(100);
-  }
-}
-
-void TaskI2CMotion() {
-  if (MiniR4.I2C4.MXMotion.begin()) {
-    Serial.println("MXMotion init success");
-  } else {
-    Serial.println("MXMotion init failed");
-  }
-
-  while (true) {
-    int roll = MiniR4.I2C2.MXMotion.getRoll();
-    int pitch = MiniR4.I2C2.MXMotion.getPitch();
-    int yaw = MiniR4.I2C2.MXMotion.getYaw();
-
-    Serial.print("Roll: ");
-    Serial.print(roll);
-    Serial.print(" , Pitch: ");
-    Serial.print(pitch);
-    Serial.print(" , Yaw: ");
-    Serial.println(yaw);
 
     delay(100);
   }
@@ -404,6 +386,89 @@ void TaskGroveUS() {
   Serial.print("Distance: ");
   Serial.print(dis);
   Serial.println("cm");
+
+  delay(100);
+}
+
+void TaskMXColorV3() {
+  if (MiniR4.I2C1.MXColorV3.begin()) {
+    Serial.println("MXColorV3 init success");
+  } else {
+    Serial.println("MXColorV3 init failed");
+    while (1) {}
+  }
+  delay(1000);
+  
+  while (true) {
+    int r = MiniR4.I2C1.MXColorV3.getR();
+    int g = MiniR4.I2C1.MXColorV3.getG();
+    int b = MiniR4.I2C1.MXColorV3.getB();
+    int c = MiniR4.I2C1.MXColorV3.getC();
+    int colorTemp = MiniR4.I2C1.MXColorV3.calcColorTemp(r, g, b);
+    int lux = MiniR4.I2C1.MXColorV3.calcLux(r, g, b);
+
+    char buff[64];
+    sprintf(buff, "R: %3d, G: %3d, B: %3d, C: %3d, ColorTemp: %3dk, Lux: %3d\n", r, g, b, c, colorTemp, lux);
+    Serial.print(buff);
+
+    delay(100);
+  }
+}
+
+void TaskMXGesture() {
+  while (MiniR4.I2C2.MXGesture.begin() != 0) {
+    Serial.println("Initial MATRIX Gesture Sensor failure! Please check if all the wire connections are fine, or if the wire sequence is correct?");
+    delay(500);
+  }
+  delay(1000);
+  
+  while (1) {
+  int gesture = MiniR4.I2C2.MXGesture.getGesture();
+    if (gesture != 0) {
+      String description = MiniR4.I2C2.MXGesture.gestureDescription(gesture);  //Convert gesture code number into string description
+      Serial.print("Gesture code = ");
+      Serial.println(gesture);
+      Serial.print("Gesture DESC = ");
+      Serial.println(description);
+      Serial.println();
+    }
+  }
+}
+
+void TaskMXLaserV2() {
+  if (MiniR4.I2C3.MXLaserV2.begin()) {
+    Serial.println("MXLaserV2 init success");
+  } else {
+    Serial.println("MXLaserV2 init failed");
+    while (1) {}
+  }
+  delay(1000);
+
+  while (true) {
+    int dis = MiniR4.I2C3.MXLaserV2.getDistance();
+    Serial.print("Distance = ");
+    Serial.print(dis);
+    Serial.println("mm");
+    delay(100);
+  }
+}
+
+float temp;
+int hum;
+void TaskMXDHT() {
+  MiniR4.D1.MXDHT.readTemperatureHumidity(temp, hum); // Read Temperature and Humidity in one request.
+  Serial.print("Temp: ");
+  Serial.print(temp);
+  Serial.print(" Hum: ");
+  Serial.println(hum);
+
+  delay(100);
+}
+
+void TaskOnewireDT() {
+  float temp = MiniR4.D2.MXOnewireDT.requestAndGetTemp();
+  Serial.print("Temp: ");
+  Serial.println(temp);
 
   delay(100);
 }

@@ -31,6 +31,8 @@ bool MatrixMiniR4::begin()
     MMLower::RESULT result = mmL.Init();
 
     LED.begin(7);
+	LED.setColor(1, 0, 0, 0);
+	LED.setColor(2, 0, 0, 0);
     Buzzer.begin(6);
 
     while (!M1.begin());
@@ -51,11 +53,11 @@ bool MatrixMiniR4::begin()
 
     /* CLK: D3R(11) , CMD: D2R(4) , SET: D3L(12) , DAT: D2L(5) */
     PS2.config_gamepad(11, 4, 12, 5, false, false);
-
+	
+	//Check the Init is ok or not.
     if (result != MMLower::RESULT::OK) {
         OLED.setCursor(4, 8);
         OLED.setTextSize(2);
-        OLED.setTextColor(WHITE);
         OLED.print(F("Init Error"));
         OLED.display();
         while (true) {
@@ -68,6 +70,38 @@ bool MatrixMiniR4::begin()
             delay(3000);
         }
     }
+	
+	//Check the FW version is outdated or not.
+	String FWVersion_S;
+	MMLower::RESULT resultFWCheck = mmL.GetFWVersion(FWVersion_S);
+	if (result == MMLower::RESULT::OK) {
+		uint8_t FWmajorVersion, FWminorVersion;
+		uint8_t FWVersion_dotIndex = FWVersion_S.indexOf('.');
+		if (FWVersion_dotIndex != -1) {
+			FWmajorVersion = FWVersion_S.substring(0, FWVersion_dotIndex).toInt();
+			FWminorVersion = FWVersion_S.substring(FWVersion_dotIndex + 1).toInt();
+			if (FWmajorVersion < 3 || (FWmajorVersion == 3 && FWminorVersion < 40)) {
+				OLED.setTextSize(1);
+				OLED.setCursor(11, 5);
+				OLED.print(F("Firmware Outdated!"));
+				OLED.setCursor(11, 18);
+				OLED.print(F("-Press UP to Skip-"));
+				OLED.display();
+				for (uint8_t i = 0; i < 3; i++) {
+					Buzzer.Tone(500, 100);
+					delay(100);
+					Buzzer.NoTone();
+					delay(100);
+				}
+				while (BTN_UP.getState() == false) {
+					delay(1);
+				}
+				OLED.clearDisplay();
+				OLED.display();
+			}
+		}
+	}
+	
     return true;
 }
 

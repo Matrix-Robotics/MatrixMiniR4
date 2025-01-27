@@ -21,13 +21,13 @@
 #include "Modules/MiniR4LED.h"
 #include "Modules/MiniR4Motion.h"
 #include "Modules/MiniR4OLED.h"
-#include "Modules/MiniR4PS2X_lib.h"
 #include "Modules/MiniR4PWM.h"
 #include "Modules/MiniR4Power.h"
 #include "Modules/MiniR4RC.h"
-#include "Modules/MiniR4SmartCamReader.h"
 #include "Modules/MiniR4Tone.h"
-#include "Modules/MiniR4VernierLib.h"
+#include "Modules/Sensors/MiniR4PS2X_lib.h"
+#include "Modules/Sensors/MiniR4SmartCamReader.h"
+#include "Modules/Sensors/MiniR4VernierLib.h"
 
 #include <Arduino.h>
 #include <WiFiS3.h>
