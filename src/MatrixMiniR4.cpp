@@ -29,7 +29,6 @@ MatrixMiniR4::MatrixMiniR4() {}
  
 bool MatrixMiniR4::begin()
 {
-	uint8_t teshu[8];
     MMLower::RESULT result = mmL.Init();
 
     LED.begin(7);
@@ -80,27 +79,42 @@ bool MatrixMiniR4::begin()
 	//Check the FW version is outdated or not.
 	String FWVersion_S;
 	MMLower::RESULT resultFWCheck = mmL.GetFWVersion(FWVersion_S);
-	if (result == MMLower::RESULT::OK) {
+	if (resultFWCheck == MMLower::RESULT::OK) {
 		uint8_t FWmajorVersion, FWminorVersion;
 		uint8_t FWVersion_dotIndex = FWVersion_S.indexOf('.');
 		if (FWVersion_dotIndex != -1) {
 			FWmajorVersion = FWVersion_S.substring(0, FWVersion_dotIndex).toInt();
 			FWminorVersion = FWVersion_S.substring(FWVersion_dotIndex + 1).toInt();
 			if (FWmajorVersion < 6 || (FWmajorVersion == 6 && FWminorVersion < 0)) {
-				OLED.clearDisplay();
-				OLED.setTextSize(1);
-				OLED.setCursor(11, 5);
-				OLED.print(F("Firmware Outdated!"));
-				OLED.setCursor(11, 18);
-				OLED.print(F("-Press UP to Skip-"));
-				OLED.display();
 				for (uint8_t i = 0; i < 3; i++) {
 					Buzzer.Tone(550, 100);
-					delay(100);
+					delay(60);
 					Buzzer.NoTone();
-					delay(100);
+					delay(60);
 				}
-				while (BTN_UP.getState() == false) {
+				
+				unsigned long lastUpdate = millis();
+				bool showFirst = true;
+				OLED.clearDisplay();
+				OLED.setTextSize(1);
+				while (BTN_DOWN.getState() == false) {
+					if (millis() - lastUpdate >= 3000) {
+						lastUpdate = millis();
+						showFirst = !showFirst;
+					}
+					OLED.clearDisplay();
+					if (showFirst) {
+						OLED.setCursor(11, 5);
+						OLED.print(F("Firmware Outdated!"));
+						OLED.setCursor(11, 18);
+						OLED.print(F(" Required:  v6.0+ "));
+					} else {
+						OLED.setCursor(11, 5);
+						OLED.print(F(" Open MATRIXblock "));
+						OLED.setCursor(6, 18);
+						OLED.print(F("File->FirmwareUpdate"));
+					}
+					OLED.display();	
 					delay(1);
 				}
 				OLED.clearDisplay();
