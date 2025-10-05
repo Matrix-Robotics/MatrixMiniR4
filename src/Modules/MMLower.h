@@ -76,7 +76,10 @@ public:
         SET_IMU_ECHO_MODE,
         SET_IMU_INIT,
         SET_POWER_PARAM,
-
+		SET_ENCODER_PPR_MAXSPEED,			//  2025/07/07
+		SET_ALL_ENCODER_PPR,				//  2025/05/22
+		SET_IMU_Calib_Data,					//  2025/05/22	
+		
         // Setting-Commonly used
         SET_DC_MOTOR_POWER = 0x11,
         SET_DC_MOTOR_SPEED,
@@ -90,7 +93,9 @@ public:
         SET_IMU_TO_ZERO,
         SET_PID_PARAM,
         SET_DC_BRAKE,
-
+		SET_ALL_DC_BRAKE,					//  2025/05/22
+		SET_ALL_DC_MOTOR_POWER,				//  2025/05/22
+		
         // Getting
         GET_BUTTON_STATE = 0x21,
         GET_BUTTONS_STATE,
@@ -101,13 +106,48 @@ public:
         GET_IMU_ACC,
         GET_POWER_INFO,
         GET_ROTATE_STATE,
-
+		GET_SPEED_ALL_DC_MOTOR,				//  2025/05/22
+		GET_IMU_ACC_NOcal,					//  2025/05/22
+		GET_ENCODER_DEGREES,				//  2025/07/15
+		
         // Auto-Send
         AUTO_SEND_BUTTON_STATE = 0x31,
         AUTO_SEND_ENCODER_COUNTER,
         AUTO_SEND_IMU_EULER,
         AUTO_SEND_IMU_GYRO,
         AUTO_SEND_IMU_ACC,
+		
+		// New Function 					//  2025/05/22
+		SET_DC_BRAKE_TYPE			= 0x41,
+		SET_DC_ALL_BRAKE_TYPE,
+		SET_DC_TWO_MOTOR_PARAM,
+		SET_DC_TWO_MoveSync_PID,
+		SET_DC_TWO_MoveGyro_PID,
+		SET_DC_TWO_TurnGyro_PID,
+		SET_DC_TWO_MOTOR_Reset_count,
+		SET_DC_TWO_MOTOR_PPR,
+		SET_DC_MOTOR_TYPE,
+
+		// New Function 					//  2025/05/22
+		SET_Drive_Move				= 0x51,
+		SET_Drive_MoveDegs,
+		SET_Drive_MoveTime,
+
+		SET_Drive_MoveSync,
+		SET_Drive_MoveSyncDegs,
+		SET_Drive_MoveSyncDegsACC,
+		SET_Drive_MoveSyncTime,
+
+		SET_Drive_Gyro,
+		SET_Drive_GyroDegs,
+		SET_Drive_GyroTime,
+
+		SET_Drive_Turn,
+		SET_Drive_Brake,
+		GET_Task_Done_Status,
+		GET_Drive_Degress,
+		GET_Drive_Counter,
+		
 
         // Other-Info
         ECHO_TEST        = 0xFF,
@@ -261,6 +301,22 @@ public:
 
         ERROR_POWER_VOLT_RANGE,
     };
+	
+	enum class Drive_RESULT
+    {
+		OK						= 0x00,
+        ERROR,
+        ERROR_SOFTSERIAL_BEGIN,
+        ERROR_INIT,
+        ERROR_WAIT_TIMEOUT,
+        ERROR_READ_TIMEOUT,
+		ERROR_Drive_Define 		= 0x07,
+		ERROR_Drive_Param,
+		ERROR_Drive_IMU_idle,
+		ERROR_MOTOR_SPEED		= 0x0F,
+		ERROR_MOTOR_POWER		= 0x10,
+		
+	};
 
     typedef struct
     {
@@ -268,10 +324,17 @@ public:
         DIR      m2_dir;
         DIR      m3_dir;
         DIR      m4_dir;
+		
         uint16_t m1_speed;
         uint16_t m2_speed;
         uint16_t m3_speed;
         uint16_t m4_speed;
+		
+        uint16_t m1_power;
+        uint16_t m2_power;
+        uint16_t m3_power;
+        uint16_t m4_power;				
+		
     } Motors_Param_t;
 
     typedef struct
@@ -297,6 +360,9 @@ public:
     RESULT SetPowerParam(float fullVolt, float cutOffVolt, float alarmVolt);
     RESULT SetStateLED(uint8_t brightness, uint32_t colorRGB);
     RESULT SetIMUToZero(void);
+	RESULT SetIMU_Calib_data(float * bufdata);						//  2025/05/22	
+	RESULT SetEncode_PPR_MaxRPM(uint8_t num, uint16_t ppr, uint16_t Maxspeed);				//  2025/07/07
+	RESULT SetALL_Encode_PPR(uint16_t * ppr);						//  2025/05/24	
     // Setting-Commonly used
     RESULT SetDCMotorPower(uint8_t num, int16_t power);
     RESULT SetDCMotorSpeed(uint8_t num, int16_t speed);
@@ -308,16 +374,23 @@ public:
     RESULT SetEncoderResetCounter(uint8_t num);
     RESULT SetPIDParam(uint8_t num, uint8_t pidNum, float kp, float ki, float kd);
     RESULT SetDCBrake(uint8_t num);
+	RESULT SetALLDCBrake(void);										//  2025/05/22	
+	RESULT SetDC_Type_Brake(uint8_t num, uint8_t type);				//  2025/05/23
+	RESULT SetALLDC_Type_Brake(uint8_t * type);						//  2025/05/23
+	RESULT SetAllDCMotorPower(Motors_Param_t param);				//  2025/05/23
     // Getting
     RESULT GetButtonState(uint8_t num, bool& btnState);
     RESULT GetButtonsState(bool* btnsState);
     RESULT GetEncoderCounter(uint8_t num, int32_t& enCounter);
     RESULT GetAllEncoderCounter(int32_t* enCounter);
-    RESULT GetIMUEuler(int16_t& roll, int16_t& pitch, int16_t& yaw);
+    RESULT GetIMUEuler(double& roll, double& pitch, double& yaw);
     RESULT GetIMUGyro(double& x, double& y, double& z);
     RESULT GetIMUAcc(double& x, double& y, double& z);
     RESULT GetPowerInfo(float& curVolt, float& curVoltPerc);
     RESULT GetRotateState(uint8_t num, bool& isEnd);
+	RESULT GetALLEncoderSpeed(int32_t * enSpeed);					//  2025/05/22	
+	RESULT Get_IMU_nancalib_acc(float * accdata);					//  2025/05/22	
+	RESULT GetEncoderDegrees(uint8_t num, int32_t& enDeges);		//  2025/07/15	
     // Other-Info
     RESULT EchoTest(void);
     RESULT GetFWVersion(String& version);
@@ -326,6 +399,36 @@ public:
     RESULT GetModelIndex(uint8_t& index);
     RESULT GetAllInfo(AllInfo_t& info);
     RESULT RunAutoQC(void);
+	
+	// Drive DC Function											// 2025/05/30
+	Drive_RESULT Set_Drive2Motor_PARAM(uint8_t m1_num, uint8_t m2_num, DIR m1_dir, DIR m2_dir, uint8_t num);
+	RESULT Set_Drive_MoveSync_PID(float Kp, float Ki, float Kd, uint8_t num);
+	RESULT Set_Drive_MoveGyro_PID(float Kp, float Ki, float Kd, uint8_t num);
+	RESULT Set_Drive_MoveTurn_PID(float Kp, float Ki, float Kd, uint8_t num);
+	Drive_RESULT Set_Drive_Reset_Count(uint8_t num, bool reset);
+	Drive_RESULT Set_Drive_Encode_PPR(uint8_t num, uint16_t* ppr);	
+	Drive_RESULT Set_Drive_Motor_Type(uint8_t num, uint8_t type);
+	
+	Drive_RESULT Set_Drive_Move_Func(int16_t power_left, int16_t power_right, uint8_t num);
+	Drive_RESULT Set_Drive_Move_Degs(int16_t power_left, int16_t power_right, uint16_t Degree_c, bool brake, bool async, uint8_t num);
+	Drive_RESULT Set_Drive_Move_Time(int16_t power_left, int16_t power_right, uint32_t Time_mS, bool brake, bool async, uint8_t num);
+	
+	Drive_RESULT Set_Drive_MoveSync_Func(int16_t power_left, int16_t power_right, uint8_t num);
+	Drive_RESULT Set_Drive_MoveSync_Degs(int16_t power_left, int16_t power_right, uint16_t Degree_c, bool brake, bool async, uint8_t num);
+	Drive_RESULT Set_Drive_MoveSync_Time(int16_t power_left, int16_t power_right, uint32_t Time_mS, bool brake, bool async, uint8_t num);
+
+	Drive_RESULT Set_Drive_MoveGyro_Func(int16_t power, int16_t Target_dri, uint8_t num);
+	Drive_RESULT Set_Drive_MoveGyro_Degs(int16_t power, int16_t Target_dri, uint16_t Degree_c, bool brake, bool async, uint8_t num);
+	Drive_RESULT Set_Drive_MoveGyro_Time(int16_t power, int16_t Target_dri, uint32_t Time_mS, bool brake, bool async, uint8_t num);
+	
+	Drive_RESULT Set_Drive_TurnGyro(int16_t power, int16_t Target_dri, uint8_t mode, bool brake, bool async, uint8_t num);
+	
+	Drive_RESULT Set_Drive_Brake(bool brake, uint8_t num);	
+	Drive_RESULT Get_Drive_isTaskDone(uint8_t num, bool * isEnd);
+	Drive_RESULT Get_Drive_EncoderCounter(uint8_t num, int32_t& enCounter);
+	Drive_RESULT Get_Drive_Degrees(uint8_t num, int32_t& Degs);
+
+	
 
     void loop(void);
     void onBtnChg(BtnChgCallback callback);

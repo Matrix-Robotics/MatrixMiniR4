@@ -1,18 +1,20 @@
+#include <MatrixMiniR4.h>
 /*
   Matrix Mini R4 Library Test
 
- * Lib: v1.1.5 or newer
- * FW: v3.2 or newer
- * Author: Barry
- * Modified: 17 Nov 2024
+ * Lib: v1.1.8 or newer
+ * FW: v6.0 or newer
+ * Author: Anthony
+ * Modified: 5 Oct 2025
 
   www.matrixrobotics.com
 */
 #include <MatrixMiniR4.h>
 
 void setup() {
-  bool ret = MiniR4.begin();  // Initialize the Matrix Mini R4 library
+  bool ret = MiniR4.begin();      // Initialize the Matrix Mini R4 library
   Serial.begin(115200);
+
   MiniR4.PWR.setBattCell(2);  // 18650x2, two-cell (2S)
 
   MiniR4.LED.setColor(1, 0, 0, 0);  // Turn off LED
@@ -52,10 +54,14 @@ void setup() {
     Serial.println("Matrix Mini R4 resetIMUValues failed");
   }
 
-  delay(1000);
+  delay(50);
 }
 
+
+
 void loop() {
+  // TaskRead_IMU_ACC();
+  // Task_saveIMUCalData();
   // TaskLED();
   // TaskButton();
   // TaskOLED();
@@ -97,15 +103,72 @@ void TaskLED() {
   delay(500);
 }
 
-void TaskButton() {
-  bool BTN_UP = MiniR4.BTN_UP.getState();
+void TaskRead_IMU_ACC()
+{
+  float accData[4];
+  while(1){ 
+    MiniR4.Motion.getIMU_acc_real(accData);
+    Serial.print("X: ");
+    Serial.print(accData[0]);
+    Serial.print(", Y: ");
+    Serial.print(accData[1]);
+    Serial.print(", Z: ");
+    Serial.println(accData[2]);
+
+  delay(250);
+  }
+}
+
+void Task_saveIMUCalData()
+{
+  while(1){
+
   bool BTN_DOWN = MiniR4.BTN_DOWN.getState();
 
+  if(BTN_DOWN){
+    MiniR4.LED.setColor(1, 125, 62, 195);  
+    MiniR4.Motion.saveIMUCalData(7.66, 8.42, 7.93, 7.98, 7.39, 9.02);
+  }else{
+    MiniR4.LED.setColor(1, 0, 0, 0);  
+  }
+
+  delay(100);
+  }
+}
+
+void TaskButton() {
+  
+  int32_t sdpeed[4] = {0};
+
+  MiniR4.M1.resetCounter();
+  MiniR4.M2.resetCounter();
+  MiniR4.M3.resetCounter();
+  MiniR4.M4.resetCounter();
+
+  while (true) {
+
+  bool BTN_UP = MiniR4.BTN_UP.getState();
+  bool BTN_DOWN = MiniR4.BTN_DOWN.getState();
+  
   Serial.print("BTN_UP: ");
   Serial.print(BTN_UP);
   Serial.print(", BTN_DOWN: ");
   Serial.println(BTN_DOWN);
-  delay(100);
+  
+  if(BTN_UP){
+    MiniR4.LED.setColor(1, 125, 255, 125);  // Green
+  }else{
+    MiniR4.LED.setColor(1, 0, 0, 0);  // Blue
+  }
+
+  if(BTN_DOWN){
+    MiniR4.LED.setColor(2, 125, 255, 0);
+  }else{
+    MiniR4.LED.setColor(2, 0, 0, 0);
+  }   
+    delay(100);
+  }
+
 }
 
 void TaskOLED() {

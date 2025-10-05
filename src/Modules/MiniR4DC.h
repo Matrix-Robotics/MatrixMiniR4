@@ -39,11 +39,30 @@ public:
         MMLower::RESULT result2 = mmL.SetDCMotorPower(_id, 0);
         MMLower::RESULT result3 = mmL.SetDCMotorDir(_id, MMLower::DIR::FORWARD);
 
+		//return (result2 == MMLower::RESULT::OK);
+
         return (
             result == MMLower::RESULT::OK && result1 == MMLower::RESULT::OK &&
             result2 == MMLower::RESULT::OK && result3 == MMLower::RESULT::OK);
-    }
 
+    }
+	
+	/** 
+	 * @brief Sets the encoder PPR (Pulses Per Revolution) and maximum RPM for a motor.
+	 * 
+	 * This function configures the encoder resolution and motor speed limits,
+	 * which are used for accurate position and speed control in various drive functions.
+	 * 
+	 * @param motorPPR Encoder pulses per revolution (PPR).
+	 * @param motorMaxRPM Motor maximum RPM (revolutions per minute).
+	 * @return True if the PPR/MaxRPM parameters were successfully set, false otherwise.
+	 */
+	 bool setPPR_RPM(uint16_t motorPPR, uint16_t motorMaxRPM)
+	{		
+		MMLower::RESULT result = mmL.SetEncode_PPR_MaxRPM(_id, motorPPR, motorMaxRPM);		
+		return (result == MMLower::RESULT::OK);
+	}
+	
     /**
      * @brief Sets the direction of the DC motor.
      * 
@@ -71,6 +90,12 @@ public:
     bool setPower(int16_t power)
     {
         MMLower::RESULT result = mmL.SetDCMotorPower(_id, power);
+		
+		if(result != MMLower::RESULT::OK){
+			delay(1);
+			result = mmL.SetDCMotorPower(_id, power);
+		}
+		
         return (result == MMLower::RESULT::OK);
     }
 
@@ -118,7 +143,7 @@ public:
     {
         MMLower::RESULT result = mmL.SetPIDParam(_id, 0, kp, ki, kd);
         return (result == MMLower::RESULT::OK);
-    }
+    }	
 
     /**
      * @brief Sets the PID parameters for rotation control. (For rotateFor())
@@ -145,6 +170,8 @@ public:
         MMLower::RESULT result  = mmL.GetEncoderCounter(_id, counter);
         return counter;
     }
+	
+
 
      /**
      * @brief Gets the current rotation in degrees based on the encoder count.
@@ -153,9 +180,9 @@ public:
      */
     int32_t getDegrees(void)
     {
-        int32_t         counter = 0;
-        MMLower::RESULT result  = mmL.GetEncoderCounter(_id, counter);
-        return (int32_t)((double)counter / 545 * 360);
+        int32_t         degs = 0;
+        MMLower::RESULT result  = mmL.GetEncoderDegrees(_id, degs);
+        return degs;
     }
 
     /**

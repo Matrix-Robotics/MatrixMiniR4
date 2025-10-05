@@ -4,22 +4,23 @@
  * Notice: This is for MATRIX Color Sensor V3, If you using MATRIX Color Sensor without "V3" name (Old one), please using MXColor function instead.
 
  * Author: Anthony
- * Modified 12 Jan 2025
+ * Modified 2 Oct 2025
 
   www.matrixrobotics.com
 */
-#include <MatrixMiniR4.h>
+#include "MatrixMiniR4.h"
 
-void setup() {
+void setup()
+{
   MiniR4.begin();
   Serial.begin(115200);
   MiniR4.PWR.setBattCell(2);  // 18650x2, two-cell (2S)
   Serial.println("\nMatrix Mini R4 Test - I2C MATRIX Color Sensor V3\n");
-  Serial.print("\n!! This is for MATRIX Color Sensor V3, If you using MATRIX Color Sensor without 'V3' name (Old one)");
+  Serial.print("\n!! This is for MATRIX Color Sensor V3, If you using MATRIX Color Sensor without 'V3' name (old one)");
   Serial.println("\n, please using MXColor function instead. !!\n");
   Serial.println("Starting Up ... \n");
   MiniR4.I2C1.MXColorV3.begin();
-  delay(2000);
+  delay(1000);
 }
 
 void loop() {
@@ -27,12 +28,13 @@ void loop() {
   int g = MiniR4.I2C1.MXColorV3.getG();
   int b = MiniR4.I2C1.MXColorV3.getB();
   int c = MiniR4.I2C1.MXColorV3.getC();
-  int colorTemp = MiniR4.I2C1.MXColorV3.calcColorTemp(r, g, b);
-  int lux = MiniR4.I2C1.MXColorV3.calcLux(r, g, b);
+  int h = MiniR4.I2C1.MXColorV3.getH();
+  int s = MiniR4.I2C1.MXColorV3.getS();
+  int v = MiniR4.I2C1.MXColorV3.getV();
+  int id = MiniR4.I2C1.MXColorV3.getColorID();
 
   char buff[64];
-  sprintf(buff, "R: %3d, G: %3d, B: %3d, C: %3d, ColorTemp: %3dk, Lux: %3d\n", r, g, b, c, colorTemp, lux);
+  sprintf(buff, "R: %3d, G: %3d, B: %3d, C: %3d, H: %3d, S: %3d, V: %3d, ID: %3d\n", r, g, b, c, h, s, v, id);
   Serial.print(buff);
 
-  delay(100);
 }

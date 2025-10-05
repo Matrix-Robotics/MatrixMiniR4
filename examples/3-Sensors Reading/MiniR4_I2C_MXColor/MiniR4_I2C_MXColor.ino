@@ -3,8 +3,8 @@
  * Description: Demonstrates how to read the MATRIX Color Sensor using I2C on the Matrix Mini R4.
  * Notice: This is for MATRIX Color Sensor V1 V2, If you using MATRIX Color Sensor with "V3" name (New one), please using MXColorV3 function instead.
 
- * Author: Barry
- * Modified 9 Oct 2024
+ * Author: Anthony
+ * Modified 1 Oct 2025
 
   www.matrixrobotics.com
 */
@@ -18,6 +18,7 @@ void setup() {
   Serial.print("\n!! This is for MATRIX Color Sensor V2, If you using MATRIX Color Sensor with 'V3' name (New one)");
   Serial.println("\n, please using MXColorV3 function instead. !!\n");
   Serial.println("Starting Up ... \n");
+  MiniR4.I2C1.MXColor.begin();
   delay(1000);
 }
 
@@ -25,13 +26,13 @@ void loop() {
   int r = MiniR4.I2C1.MXColor.getColor(R);
   int g = MiniR4.I2C1.MXColor.getColor(G);
   int b = MiniR4.I2C1.MXColor.getColor(B);
-  int c = MiniR4.I2C1.MXColor.getColor(C);
-  int m = MiniR4.I2C1.MXColor.getColor(M);
-  int y = MiniR4.I2C1.MXColor.getColor(Y);
-  int k = MiniR4.I2C1.MXColor.getColor(K);
+  int h = MiniR4.I2C1.MXColor.getH();
+  int s = MiniR4.I2C1.MXColor.getS();
+  int v = MiniR4.I2C1.MXColor.getV();
+  int id = MiniR4.I2C1.MXColor.getColorID();
 
   char buff[64];
-  sprintf(buff, "R: %3d, G: %3d, B: %3d, C: %3d, M: %3d, Y: %3d, K: %3d\n", r, g, b, c, m, y, k);
+  sprintf(buff, "R: %3d, G: %3d, B: %3d, H: %3d, S: %3d, V: %3d, ID: %3d\n", r, g, b, h, s, v, id);
   Serial.print(buff);
 
   delay(100);

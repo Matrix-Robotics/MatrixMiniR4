@@ -30,11 +30,45 @@ int32_t BitConverter::ToInt32(uint8_t* value, int startIdx)
     return data;
 }
 
+float BitConverter::Tofloat(uint8_t* value, int startIdx)
+{
+	union{
+	  uint8_t b[4];
+	  float		fl;
+	}fl_X;	
+	int inX;
+	inX = startIdx;
+	
+    fl_X.b[0] = value[inX];
+	inX++;
+    fl_X.b[1] = value[inX];
+	inX++;
+    fl_X.b[2] = value[inX];
+	inX++;
+    fl_X.b[3] = value[inX];
+    return fl_X.fl;	
+}
+
 int16_t BitConverter::ToInt16(uint8_t* value, int startIdx)
 {
     int16_t data = value[startIdx++];
     data |= value[startIdx] << 8;
     return data;
+}
+
+void BitConverter::FloatGetBytes(uint8_t* buff, float value)
+{
+	union{
+	  uint8_t b[4];
+	  float		fl;
+	}xfl_X;		
+	
+	xfl_X.fl = value;
+	
+    buff[0] = xfl_X.b[0];
+    buff[1] = xfl_X.b[1];
+    buff[2] = xfl_X.b[2];
+    buff[3] = xfl_X.b[3];
 }
 
 void BitConverter::GetBytes(uint8_t* buff, uint32_t value)

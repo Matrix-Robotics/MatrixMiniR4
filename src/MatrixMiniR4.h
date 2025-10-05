@@ -17,6 +17,7 @@
 #include "Modules/MiniR4Buzzer.h"
 #include "Modules/MiniR4DAC.h"
 #include "Modules/MiniR4DC.h"
+#include "Modules/MiniR4DriveDC.h"
 #include "Modules/MiniR4I2C.h"
 #include "Modules/MiniR4LED.h"
 #include "Modules/MiniR4Motion.h"
@@ -25,6 +26,7 @@
 #include "Modules/MiniR4Power.h"
 #include "Modules/MiniR4RC.h"
 #include "Modules/MiniR4Tone.h"
+
 #include "Modules/Sensors/MiniR4PS2X_lib.h"
 #include "Modules/Sensors/MiniR4SmartCamReader.h"
 #include "Modules/Sensors/MiniR4VernierLib.h"
@@ -58,6 +60,9 @@ public:
     MiniR4DC<2> M2; ///< Port M2 DC 5V Motor
     MiniR4DC<3> M3; ///< Port M3 DC 5V Motor
     MiniR4DC<4> M4; ///< Port M4 DC 5V Motor
+	
+	// DC Drive Motor
+	MiniR4DriveDC<1> DriveDC;	//Drive Two DC 5V Motor
 
     // Servo
     MiniR4RC<1> RC1; ///< Port RC1 RC 5V Servo

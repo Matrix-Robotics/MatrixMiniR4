@@ -15,6 +15,7 @@
 #include "Sensors/MiniR4_MXColorV3.h"
 #include "Sensors/MiniR4_MXGesture.h"
 
+#include "Sensors/MiniR4_HTColV2.h"
 
 #include "Sensors/MiniR4_GroveI2C_BME280.h"
 // #include "Sensors/MiniR4_EIOBoardExt.h"
@@ -47,6 +48,8 @@ public:
         MXGesture._ch  = ID;
         MXCtrl._ch  = ID;
         GroveBME280._ch  = ID;
+        HTCol._ch  = ID;
+		
         // EIOBoard._ch  = ID;
 
         // MXMotion._pWire = WIRE; ///< Matrix Motion sensor
@@ -57,6 +60,8 @@ public:
         MXGesture._pWire  = WIRE; ///< Matrix Gesture sensor
         MXCtrl._pWire  = WIRE; ///< Matrix Controller (HT)
         GroveBME280._pWire  = WIRE; ///< Grove BME280 sensor
+		HTCol._pWire  = WIRE;
+        
         // EIOBoard._pWire  = WIRE; ///< Matrix EIOBoard
     }
 
@@ -68,6 +73,8 @@ public:
     MatrixGesture  MXGesture; ///< Matrix Gesture sensor instance.
     MatrixController  MXCtrl; ///< Matrix Controller (HT) instance.
     GroveI2C_BME280  GroveBME280; ///< Grove BME280 sensor instance.
+    HTColV2  HTCol; ///< Grove BME280 sensor instance.
+    
     // MatrixEIOBoard  EIOBoard; ///< Matrix EIOBoard instance.
 
     // Adafruit_TCS34725 MXColor = Adafruit_TCS34725(

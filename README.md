@@ -1,10 +1,11 @@
 # MatrixR4 Arduino Library
 ![image](https://github.com/user-attachments/assets/d8d6eb27-3f07-4553-8d9b-4d53e81731c0)
 
-MATRIX R4 (Mini R4) is an Arduino Uno R4 based robot controller for MA300 Series.
+MATRIX R4 (Mini R4) is an Arduino Uno R4 based robot controller for MA300, MAFI900 Series.
 With the MATRIX building system, you can make tons of projects. 
 From basic tracking car to omni-directional mobile platform, you can make any ideas comes out of your mind.
 ## Features
+Built-in STM32 for motor control and 6-axis IMU processing<br>
 Support 4 channel/360 angle RC Servo control.<br>
 Support 4 channel/8-bit full-bridge DC motor control with encoder feedback.<br>
 Support 4 channel Digital I/O.<br>
