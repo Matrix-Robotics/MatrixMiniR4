@@ -54,7 +54,7 @@ void MatrixLaser::i2cMUXSelect()
     _pWire->beginTransmission(ADDR_PCA954X);
     _pWire->write((1 << _ch));
     _pWire->endTransmission(1);
-    delayMicroseconds(300);
+    delayMicroseconds(800);
 }
 
 void MatrixLaser::i2cWriteData(LaserRegType reg, uint8_t data)

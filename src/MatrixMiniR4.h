@@ -30,6 +30,7 @@
 #include "Modules/Sensors/MiniR4PS2X_lib.h"
 #include "Modules/Sensors/MiniR4SmartCamReader.h"
 #include "Modules/Sensors/MiniR4VernierLib.h"
+#include "Modules/Sensors/MiniR4_MatrixMC.h"
 
 #include <Arduino.h>
 #include <WiFiS3.h>
@@ -121,6 +122,9 @@ public:
 
     // Vision
     MiniR4SmartCamReader Vision;  ///< mVision (UART 9600)
+	
+	// MATRIX Motor Controller (CAN)
+    MatrixMC_Class MXMotorCtrl; ///< MATRIX Motor Controller (CAN BUS on D4 port)
 
 private:
 };

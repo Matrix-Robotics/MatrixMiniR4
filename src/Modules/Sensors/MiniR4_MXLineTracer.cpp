@@ -149,12 +149,13 @@ void MatrixLineTracer::endCalibration() {
 void MatrixLineTracer::i2cMUXSelect()
 {
   // Due to some HW issue, currently not support I2C MUX.
-  delayMicroseconds(500);
-  // if (_ch < 0)
-	// delayMicroseconds(500);
-    // return; // no MUX
-  // _pWire->beginTransmission(ADDR_PCA954X);
-  // _pWire->write((1 << _ch));
-  // _pWire->endTransmission(1);
-  // delay(1);
+  // delayMicroseconds(500);
+  if (_ch < 0){
+	delayMicroseconds(500);
+    return; // no MUX
+  }
+  _pWire->beginTransmission(ADDR_PCA954X);
+  _pWire->write((1 << _ch));
+  _pWire->endTransmission(1);
+  delayMicroseconds(100);
 }
