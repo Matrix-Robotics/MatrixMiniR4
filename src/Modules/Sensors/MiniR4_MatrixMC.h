@@ -69,7 +69,7 @@ public:
    * @brief Set the motor output power.
    * @param power Output power in the range -100 to 100 (negative values reverse direction)
    */
-  void setPower(int8_t power);
+  void setPower(int16_t power);
 
   /**
    * @brief Set the motor brake state.

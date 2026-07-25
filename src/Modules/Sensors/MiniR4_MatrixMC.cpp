@@ -154,7 +154,7 @@ bool MatrixMC_Motor::lastReadFresh(void) const {
   return _lastReadFresh;
 }
 
-void MatrixMC_Motor::setPower(int8_t power) {
+void MatrixMC_Motor::setPower(int16_t power) {
   if (!_initialized) return;
   // Protocol range is -100…100; firmware behavior outside it is unknown.
   if (power >  100) power =  100;
