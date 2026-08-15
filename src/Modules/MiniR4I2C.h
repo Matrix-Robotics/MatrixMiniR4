@@ -17,6 +17,7 @@
 
 #include "Sensors/MiniR4_HTColV2.h"
 #include "Sensors/MiniR4_MXLineTracer.h"
+#include "Sensors/MiniR4_MJ5.h"
 
 #include "Sensors/MiniR4_GroveI2C_BME280.h"
 // #include "Sensors/MiniR4_EIOBoardExt.h"
@@ -50,6 +51,7 @@ public:
         GroveBME280._ch  = ID;
         HTCol._ch  = ID;
         MXLineTracer._ch  = ID;
+		MJ5._ch    = ID;
 
         MXLaser._pWire  = WIRE; ///< Matrix Laser sensor
         MXLaserV2._pWire  = WIRE; ///< Matrix Laser V2 ToF sensor
@@ -60,6 +62,7 @@ public:
         GroveBME280._pWire  = WIRE; ///< Grove BME280 sensor
 		HTCol._pWire  = WIRE; ///< HT Color V2 sensor
 		MXLineTracer._pWire  = WIRE; ///< MXLineTracer sensor
+		MJ5._pWire = WIRE; ///< MJ5 Joystick
     }
 
     MatrixLaser  MXLaser; ///< Matrix Laser sensor instance.
@@ -71,6 +74,7 @@ public:
     GroveI2C_BME280  GroveBME280; ///< Grove BME280 sensor instance.
     HTColV2  HTCol; ///< HT Color V2 sensor instance.
     MatrixLineTracer  MXLineTracer; ///< MatrixLineTracer sensor instance.
+    MatrixMJ5 MJ5;  ///< MJ5 Joystick sensor instance.
     
 
 private:
